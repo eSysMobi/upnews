@@ -31,8 +31,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int upnews_logo_w2=0x7f020002;
     }
     public static final class id {
-        public static final int imageView1=0x7f080001;
-        public static final int k2VideoView=0x7f080000;
+        public static final int fullscreenLayout=0x7f070001;
+        public static final int imageView1=0x7f070003;
+        public static final int k2VideoView=0x7f070002;
+        public static final int surfaceHolder=0x7f070000;
     }
     public static final class layout {
         public static final int activity_splash=0x7f030000;
@@ -70,15 +72,15 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f070000;
+        public static final int AppBaseTheme=0x7f080000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f070001;
-        public static final int ButtonBar=0x7f070003;
-        public static final int ButtonBarButton=0x7f070004;
-        public static final int FullscreenActionBarStyle=0x7f070005;
-        public static final int FullscreenTheme=0x7f070002;
+        public static final int AppTheme=0x7f080001;
+        public static final int ButtonBar=0x7f080003;
+        public static final int ButtonBarButton=0x7f080004;
+        public static final int FullscreenActionBarStyle=0x7f080005;
+        public static final int FullscreenTheme=0x7f080002;
     }
     public static final class styleable {
         /** 

@@ -46,7 +46,7 @@ public class K2Playback {
 		sendBundle.putString(
 				"device_id",
 				context.getSharedPreferences(K2Constants.APP_PREF,
-						Context.MODE_MULTI_PROCESS).getString("device_id",
+						Context.MODE_PRIVATE).getString("device_id",
 						"0000"));
 		this.folderPath = folderPath;
 	}

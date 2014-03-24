@@ -1,7 +1,5 @@
 package mobi.esys.upnews;
 
-import java.lang.reflect.Method;
-
 import mobi.esys.constants.K2Constants;
 import mobi.esys.tasks.FirstFileLoader;
 import android.app.Activity;
@@ -10,6 +8,8 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
+import android.widget.Toast;
 
 public class SplashActivity extends Activity implements LoaderCallbacks<String> {
 
@@ -23,9 +23,11 @@ public class SplashActivity extends Activity implements LoaderCallbacks<String> 
 		String deviceID = "";
 
 		try {
-			Class<?> c = Class.forName("android.os.SystemProperties");
-			Method get = c.getMethod("get", String.class);
-			deviceID = (String) get.invoke(c, "ro.serialno");
+			// Class<?> c = Class.forName("android.os.SystemProperties");
+			// Method get = c.getMethod("get", String.class);
+			// deviceID = (String) get.invoke(c, "ro.serialno");
+			deviceID = Secure
+					.getString(getContentResolver(), Secure.ANDROID_ID);
 		} catch (Exception ignored) {
 		}
 
