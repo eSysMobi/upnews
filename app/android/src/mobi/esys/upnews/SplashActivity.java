@@ -9,7 +9,6 @@ import android.content.Loader;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
-import android.widget.Toast;
 
 public class SplashActivity extends Activity implements LoaderCallbacks<String> {
 
