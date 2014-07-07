@@ -5,7 +5,6 @@ import mobi.esys.fileworks.AndroidAssets;
 import mobi.esys.fileworks.DirectiryWorks;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Environment;
 
 public class GetFirstFileTask extends AsyncTask<String, Void, Void> {
 	private transient Context context;
@@ -19,7 +18,8 @@ public class GetFirstFileTask extends AsyncTask<String, Void, Void> {
 		DirectiryWorks directiryWorks = new DirectiryWorks(params[0]);
 		directiryWorks.createDir();
 
-		DirectiryWorks directiryWorks2 = new DirectiryWorks(K2Constants.PHOTO_DIR_NAME);
+		DirectiryWorks directiryWorks2 = new DirectiryWorks(
+				K2Constants.PHOTO_DIR_NAME);
 		directiryWorks2.createDir();
 		AndroidAssets androidAssets = new AndroidAssets(context, params[0]);
 		androidAssets.saveFileFromAssets();

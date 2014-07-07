@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import mobi.esys.constants.K2Constants;
@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.util.Log;
 
 public class DownloadVideoTask extends AsyncTask<Void, Void, Void> {
 	private transient String[] md5s;
@@ -31,6 +32,7 @@ public class DownloadVideoTask extends AsyncTask<Void, Void, Void> {
 
 	@Override
 	protected Void doInBackground(Void... params) {
+		Log.d("down", "isDwonl");
 		String[] serverMD5 = k2Server.getMD5FromServer();
 		DirectiryWorks directiryWorks = new DirectiryWorks(
 				K2Constants.VIDEO_DIR_NAME);
@@ -40,11 +42,14 @@ public class DownloadVideoTask extends AsyncTask<Void, Void, Void> {
 
 		if (!Arrays.deepEquals(serverMD5, folderMD5)) {
 			if (!isDelete) {
-				Set<String> urlSet = new HashSet<String>();
+				Set<String> urlSet = new LinkedHashSet<String>();
 				urlSet.add("");
-				Set<String> urlSetRec = context.getSharedPreferences(
-						K2Constants.APP_PREF, Context.MODE_PRIVATE)
-						.getStringSet("urls", urlSet);
+				Set<String> urlSetRec = new LinkedHashSet<String>(
+						Arrays.asList(context
+								.getSharedPreferences(K2Constants.APP_PREF,
+										Context.MODE_PRIVATE)
+								.getString("urls", "").replace("[", "")
+								.replace("]", "").split(",")));
 				SharedPreferences.Editor editor = context.getSharedPreferences(
 						K2Constants.APP_PREF, Context.MODE_PRIVATE).edit();
 				editor.putBoolean("isDownload", true);
@@ -66,7 +71,7 @@ public class DownloadVideoTask extends AsyncTask<Void, Void, Void> {
 	}
 
 	public void videoFromUrlToDisk(final String vidURL) throws Exception {
-		Set<String> defSet = new HashSet<String>();
+		Set<String> defSet = new LinkedHashSet<String>();
 		defSet.add(K2Constants.FIRST_MD5);
 		Set<String> md5Set = context.getSharedPreferences(K2Constants.APP_PREF,
 				Context.MODE_PRIVATE).getStringSet("md5sApp", defSet);
@@ -100,6 +105,7 @@ public class DownloadVideoTask extends AsyncTask<Void, Void, Void> {
 	}
 
 	private void writeFile(InputStream is, File f) throws Exception {
+		Log.d("file", "file write");
 		f.createNewFile();
 
 		FileOutputStream fos = new FileOutputStream(f);

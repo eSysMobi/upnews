@@ -1,7 +1,7 @@
 package mobi.esys.upnews_server;
 
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import mobi.esys.constants.K2Constants;
@@ -13,6 +13,8 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -25,12 +27,14 @@ public class K2Server {
 	}
 
 	public String[] getMD5FromServer() {
+		Log.d("server", "get md5s from server");
 		SharedPreferences preferences = context.getSharedPreferences(
 				K2Constants.APP_PREF, Context.MODE_PRIVATE);
-		Set<String> defaultSet = new HashSet<String>();
+		Set<String> defaultSet = new LinkedHashSet<String>();
 		defaultSet.add(K2Constants.FIRST_MD5);
 		Set<String> md5Sset = preferences.getStringSet("md5sApp", defaultSet);
 		String[] md5FromServer = md5Sset.toArray(new String[md5Sset.size()]);
+		String[] resultMd5 = { "" };
 
 		JSONObject jsonObject = K2Request.getJSONFromURL("videolist", "");
 
@@ -46,59 +50,118 @@ public class K2Server {
 				md5JSON[i] = currVidList.getJSONObject("file").getString("md5");
 			}
 
-			set = new HashSet<String>(Arrays.asList(md5JSON));
+			set = new LinkedHashSet<String>(Arrays.asList(md5JSON));
 			Log.d("set", set.toString());
-		} catch (JSONException e) {
-			Log.d("je", "je");
-		}
+			if (isOnline()) {
+				Log.d("online", "online");
+				if (!Arrays.deepEquals(md5FromServer, md5JSON)) {
+					Log.d("pllt", "playlist change");
+					saveURLS(jsonObject);
+					Set<String> md5Set = new LinkedHashSet<String>(
+							Arrays.asList(md5JSON));
+					resultMd5 = new String[md5JSON.length];
+					for (int i = 0; i < resultMd5.length; i++) {
+						resultMd5[i] = md5JSON[i];
+					}
+					SharedPreferences.Editor editor = preferences.edit();
+					editor.putStringSet("md5sApp", md5Set);
+					editor.commit();
+				}
 
-		if (!Arrays.deepEquals(md5FromServer, md5JSON) && md5JSON.length > 1) {
-			saveURLS(jsonObject);
-			Set<String> md5Set = new HashSet<String>(Arrays.asList(md5JSON));
-			SharedPreferences.Editor editor = preferences.edit();
-			editor.putStringSet("md5sApp", md5Set);
-			editor.commit();
-		}
-
-		else {
-			Set<String> md5Set = new HashSet<String>(
-					Arrays.asList(md5FromServer));
-			SharedPreferences.Editor editor = preferences.edit();
-			editor.putStringSet("md5sApp", md5Set);
-			editor.commit();
-		}
-		return md5FromServer;
-	}
-
-	private void saveURLS(JSONObject serverObject) {
-		Log.d("je", "sU");
-		SharedPreferences.Editor editor = context.getSharedPreferences(
-				K2Constants.APP_PREF, Context.MODE_PRIVATE).edit();
-		JSONArray array;
-		String[] urls = { "" };
-
-		try {
-			array = serverObject.getJSONArray("result");
-
-			urls = new String[array.length()];
-
-			for (int i = 0; i < array.length(); i++) {
-				JSONObject currVidList = array.getJSONObject(i);
-
-				urls[i] = currVidList.getString("file_webpath");
+				else {
+					Log.d("online", "don't online");
+					Log.d("pllt", "playlist don't change");
+					Set<String> md5Set = new LinkedHashSet<String>(
+							Arrays.asList(md5FromServer));
+					resultMd5 = new String[md5FromServer.length];
+					for (int i = 0; i < resultMd5.length; i++) {
+						resultMd5[i] = md5FromServer[i];
+					}
+					SharedPreferences.Editor editor = preferences.edit();
+					editor.putStringSet("md5sApp", md5Set);
+					editor.commit();
+				}
+			} else {
+				Log.d("pllt", "playlist don't change");
+				Set<String> md5Set = new LinkedHashSet<String>(
+						Arrays.asList(md5FromServer));
+				resultMd5 = new String[md5FromServer.length];
+				for (int i = 0; i < resultMd5.length; i++) {
+					resultMd5[i] = md5FromServer[i];
+				}
+				SharedPreferences.Editor editor = preferences.edit();
+				editor.putStringSet("md5sApp", md5Set);
+				editor.commit();
 			}
 		} catch (JSONException e) {
 			Log.d("je", "je");
 		}
-		Set<String> urlSet = new HashSet<String>(Arrays.asList(urls));
-		editor.putStringSet("urls", urlSet);
-		editor.commit();
+
+		return resultMd5;
+	}
+
+	private void saveURLS(JSONObject serverObject) {
+		Log.d("je", "sU");
+
+		SharedPreferences.Editor editor = context.getSharedPreferences(
+				K2Constants.APP_PREF, Context.MODE_PRIVATE).edit();
+		JSONArray array;
+		String[] urlsJSON = { "" };
+		SharedPreferences preferences = context.getSharedPreferences(
+				K2Constants.APP_PREF, Context.MODE_PRIVATE);
+		String[] urlsFromServer = preferences.getString("urls", "")
+				.replace("[", "").replace("]", "").split(",");
+		Log.d("urls from server", Arrays.asList(urlsFromServer).toString());
+		try {
+
+			if (isOnline()) {
+
+				Log.d("online", "online");
+				array = serverObject.getJSONArray("result");
+				urlsJSON = new String[array.length()];
+
+				for (int i = 0; i < array.length(); i++) {
+					JSONObject currVidList = array.getJSONObject(i);
+
+					urlsJSON[i] = currVidList.getString("file_webpath");
+				}
+
+				if (!Arrays.deepEquals(urlsFromServer, urlsJSON)) {
+					Log.d("urls request", Arrays.asList(urlsJSON).toString());
+					editor.putString("urls", Arrays.asList(urlsJSON).toString());
+					editor.commit();
+				} else {
+					editor.putString("urls", Arrays.asList(urlsFromServer)
+							.toString());
+					editor.commit();
+				}
+
+			} else {
+				editor.putString("urls", Arrays.asList(urlsFromServer)
+						.toString());
+				editor.commit();
+			}
+
+		} catch (JSONException e) {
+			Log.d("je", "je");
+		}
+
 	}
 
 	public void sendDataToServer(Bundle sandParams) {
 		K2Request k2Request = new K2Request();
 		k2Request.sendDataToServer(sandParams, K2Constants.VIDEO_URLPREFIX
 				+ K2Constants.SEND_DATA_METHOD_NAME + K2Constants.GET_TYPE);
+	}
+
+	public boolean isOnline() {
+		ConnectivityManager cm = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+			return true;
+		}
+		return false;
 	}
 
 }

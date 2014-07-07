@@ -1,11 +1,9 @@
 package mobi.esys.playback;
 
 import java.io.File;
-import java.util.HashSet;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.Set;
-
-import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.MapBuilder;
 
 import mobi.esys.constants.K2Constants;
 import mobi.esys.fileworks.DirectiryWorks;
@@ -20,21 +18,27 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.MediaController;
 import android.widget.VideoView;
+
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
 
 public class K2Playback {
 	private transient Context context;
 	private transient String folderPath;
 	private transient VideoView k2VideoView;
-	private transient int videoIndex = 0;
+	// private transient int videoIndex = 0;
 	private static final String PLAY_TAG = "K2Playback";
 	private transient Set<String> md5sApp;
 	private transient String[] files;
 	private transient SharedPreferences preferences;
 	private transient DownloadVideoTask downloadVideoTask;
 	private transient Bundle sendBundle;
+	private transient String[] ulrs = { "" };
+	private transient int serverIndex = 1;
 
 	public K2Playback(Context context, String folderPath) {
 		super();
@@ -46,8 +50,7 @@ public class K2Playback {
 		sendBundle.putString(
 				"device_id",
 				context.getSharedPreferences(K2Constants.APP_PREF,
-						Context.MODE_PRIVATE).getString("device_id",
-						"0000"));
+						Context.MODE_PRIVATE).getString("device_id", "0000"));
 		this.folderPath = folderPath;
 	}
 
@@ -64,7 +67,7 @@ public class K2Playback {
 		sendBundle.putString("longitude", actBundle.getString("longitude"));
 		preferences = context.getSharedPreferences(K2Constants.APP_PREF,
 				Context.MODE_PRIVATE);
-		Set<String> defaultSet = new HashSet<String>();
+		Set<String> defaultSet = new LinkedHashSet<String>();
 		defaultSet.add(K2Constants.FIRST_MD5);
 		md5sApp = preferences.getStringSet("md5sApp", defaultSet);
 		File file = new File(filePath);
@@ -122,29 +125,88 @@ public class K2Playback {
 	}
 
 	private void nextTrack(final String[] files) {
-
 		if (files.length > 0) {
-			if (videoIndex == files.length - 1) {
-				videoIndex = 0;
-				File file = new File(files[files.length - 1]);
-				String videoName = file.getName().replace(".mp4", "");
-				if (videoName.startsWith("dd")) {
-					videoName.substring(2, videoName.length() - 1);
+
+			String[] listFiles = { files[0] };
+
+			if (!context
+					.getSharedPreferences(K2Constants.APP_PREF,
+							Context.MODE_PRIVATE).getString("urls", "")
+					.equals("")) {
+				Log.d("urls string",
+						context.getSharedPreferences(K2Constants.APP_PREF,
+								Context.MODE_PRIVATE).getString("urls", "")
+								.replace("[", "").replace("]", ""));
+
+				ulrs = context
+						.getSharedPreferences(K2Constants.APP_PREF,
+								Context.MODE_PRIVATE).getString("urls", "")
+						.replace("[", "").replace("]", "").split(",");
+
+			}
+
+			listFiles = new String[ulrs.length + 1];
+			for (int i = 0; i < listFiles.length; i++) {
+				if (i == 0) {
+					listFiles[i] = files[0];
+				} else {
+					listFiles[i] = Environment.getExternalStorageDirectory()
+							.getAbsolutePath()
+							+ K2Constants.VIDEO_DIR_NAME
+							+ ulrs[i - 1]
+									.substring(
+											ulrs[i - 1].lastIndexOf('/') + 1,
+											ulrs[i - 1].length())
+									.replace("[", "").replace("]", "");
 				}
-				sendBundle.putString("video_name", videoName);
+			}
+
+			Log.d("urls next", Arrays.asList(listFiles).toString());
+
+			Log.d("fs", listFiles[serverIndex]);
+			FileWorks fileWorks = new FileWorks(listFiles[serverIndex]);
+			File fs = new File(listFiles[serverIndex]);
+
+			DirectiryWorks directiryWorks = new DirectiryWorks(folderPath);
+			String[] refreshFiles = directiryWorks.getDirFileList();
+			Log.d("files", Arrays.asList(refreshFiles).toString());
+
+			if (fs.exists()
+					&& md5sApp.contains(fileWorks.getFileMD5())
+					&& Arrays.asList(refreshFiles).contains(
+							fs.getAbsolutePath()) || fs.exists()
+					&& fs.getName().startsWith("dd")) {
+
+				if (serverIndex == listFiles.length - 1) {
+					Log.d("index", String.valueOf(serverIndex));
+					Log.d("len", String.valueOf(listFiles.length));
+					playFile(listFiles[serverIndex]);
+					String videoName = listFiles[serverIndex].substring(
+							listFiles[serverIndex].lastIndexOf("/") + 1,
+							listFiles[serverIndex].length())
+							.replace(".mp4", "");
+					sendBundle.putString("video_name", videoName);
+					serverIndex = 0;
+
+				} else {
+					playFile(listFiles[serverIndex]);
+					Log.d("index", String.valueOf(serverIndex));
+					String videoName = listFiles[serverIndex].substring(
+							listFiles[serverIndex].lastIndexOf("/") + 1,
+							listFiles[serverIndex].length())
+							.replace(".mp4", "");
+					sendBundle.putString("video_name", videoName);
+					serverIndex++;
+				}
 			} else {
-				videoIndex++;
-				File file = new File(files[videoIndex - 1]);
-				String videoName = file.getName().replace(".mp4", "");
-				if (videoName.startsWith("dd")) {
-					videoName.substring(2, videoName.length() - 1);
-				}
+				playFile(files[0]);
+				serverIndex = 0;
+				String videoName = files[0].substring(
+						files[0].lastIndexOf("/") + 1, files[0].length())
+						.replace(".mp4", "");
 				sendBundle.putString("video_name", videoName);
 			}
-			playFile(files[videoIndex]);
-			SharedPreferences.Editor editor = preferences.edit();
-			editor.putInt("currPlIndex", videoIndex);
-			editor.commit();
+
 		}
 
 		sendDataToServer(sendBundle);

@@ -49,20 +49,30 @@ public class DirectiryWorks {
 		Log.d(DIR_WORKS_TAG, "deleteFilesFromDir");
 		Log.d(DIR_WORKS_TAG, Environment.getExternalStorageDirectory()
 				.getAbsolutePath() + this.directoryPath);
+
+		Log.d("mask list task", maskList.toString());
 		if (videoDir.exists()) {
 			int ci = context.getSharedPreferences(K2Constants.APP_PREF,
 					Context.MODE_PRIVATE).getInt("currPlIndex", 0);
 
 			File[] files = videoDir.listFiles();
 
-			for (int i = 0; i < files.length; i++) {
-
-				if (maskList.contains(i)) {
-
-					if (files[i].exists()
-							&& (!files[i].getName().startsWith("dd"))
-							&& ci != i) {
+			if (maskList.size() == 1 && maskList.get(0) == 0) {
+				for (int i = 0; i < files.length; i++) {
+					if (!files[i].getName().startsWith("dd"))
 						files[i].delete();
+				}
+			} else {
+
+				for (int i = 0; i < files.length; i++) {
+
+					if (maskList.contains(i)) {
+
+						if (files[i].exists()
+								&& (!files[i].getName().startsWith("dd"))
+								&& ci != i) {
+							files[i].delete();
+						}
 					}
 				}
 			}
