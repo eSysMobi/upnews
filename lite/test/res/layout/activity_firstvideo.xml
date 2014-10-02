@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fullscreenLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null"
+    tools:context=".FullscreenActivity" >
+
+    <VideoView
+        android:id="@+id/k2FirstVideoView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:background="@null" />
+
+    <ImageView
+        android:id="@+id/gdAuthBtn"
+        android:layout_width="320px"
+        android:layout_height="80px"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="28dp"
+        android:layout_marginTop="20dp"
+        android:alpha="0.3"
+        android:background="@null"
+        android:contentDescription="@string/todo"
+        android:src="@drawable/upnews_logo_w2" />
+
+    <FrameLayout
+        android:id="@+id/surfaceHolder"
+        android:layout_width="1px"
+        android:layout_height="1px" >
+    </FrameLayout>
+
+</RelativeLayout>
