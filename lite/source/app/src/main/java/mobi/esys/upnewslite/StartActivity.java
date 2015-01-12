@@ -91,7 +91,7 @@ public class StartActivity extends Activity {
 		};
 
 		bindService(new Intent(
-				"com.android.vending.billing.InAppBillingService.BIND"),
+				"com.android.vending.billing.InAppBillingService.BIND").setPackage("com.android.vending"),
 				mServiceConn, Context.BIND_AUTO_CREATE);
 	}
 

@@ -45,16 +45,15 @@
             <meta-data
                 android:name="com.google.android.apps.drive.APP_ID"
                 android:value="id=127578844442-h41s9f3md1ni2soa7e3t3rpuqrukkd1u" />
-
+        </activity>
+        <activity
+            android:name="mobi.esys.upnewslite.StartActivity"
+            android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="mobi.esys.upnewslite.StartActivity"
-            android:screenOrientation="landscape" >
         </activity>
 
         <receiver
