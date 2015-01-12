@@ -21,6 +21,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.MediaController;
 import android.widget.VideoView;
@@ -156,8 +157,8 @@ public class K2Playback {
 				if (ulrs[i].startsWith(" ")) {
 					ulrs[i] = ulrs[i].substring(1, ulrs[i].length());
 				}
-				listFiles[i] = context.getExternalFilesDir("")
-						.getAbsolutePath()
+				listFiles[i] = Environment.getExternalStorageDirectory()
+                        .getAbsolutePath()
 						+ K2Constants.VIDEO_DIR_NAME
 						+ ulrs[i]
 								.substring(ulrs[i].lastIndexOf('/') + 1,
