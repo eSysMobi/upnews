@@ -1,104 +1,186 @@
 package mobi.esys.upnews_server;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import mobi.esys.constants.K2Constants;
-import mobi.esys.upnews_requests.K2Request;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import mobi.esys.data.GDFile;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Bundle;
+import android.content.SharedPreferences.Editor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.NetworkInfo.State;
+import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.Drive.Children;
+import com.google.api.services.drive.DriveScopes;
+import com.google.api.services.drive.model.ChildList;
+import com.google.api.services.drive.model.ChildReference;
+import com.google.api.services.drive.model.File;
 
 public class K2Server {
 	private transient Context context;
-	Set<String> set;
+	private transient String accName;
+	private transient String folderId;
+	private transient SharedPreferences prefs;
+	private transient List<GDFile> gdFiles;
+	private transient static Drive drive;
+	private transient GoogleAccountCredential credential;
 
 	public K2Server(Context context) {
 		this.context = context;
+		this.prefs = context.getSharedPreferences(K2Constants.APP_PREF,
+				Context.MODE_PRIVATE);
+		this.accName = this.prefs.getString("accName", "");
+		this.folderId = this.prefs.getString("folderId", "");
+		this.gdFiles = new ArrayList<GDFile>();
+		credential = GoogleAccountCredential.usingOAuth2(context,
+				DriveScopes.DRIVE);
+		credential.setSelectedAccountName(accName);
+		drive = getDriveService(credential);
 	}
 
-	public String[] getMD5FromServer() {
-		SharedPreferences preferences = context.getSharedPreferences(
-				K2Constants.APP_PREF, Context.MODE_PRIVATE);
-		Set<String> defaultSet = new HashSet<String>();
-		defaultSet.add(K2Constants.FIRST_MD5);
-		Set<String> md5Sset = preferences.getStringSet("md5sApp", defaultSet);
-		String[] md5FromServer = md5Sset.toArray(new String[md5Sset.size()]);
+	public Set<String> getMD5FromServer() {
+		saveURLS();
 
-		JSONObject jsonObject = K2Request.getJSONFromURL("videolist", "");
+		Set<String> resultMD5 = new HashSet<String>();
 
-		String[] md5JSON = new String[1];
-		JSONArray array;
-		try {
-			array = jsonObject.getJSONArray("result");
-
-			md5JSON = new String[array.length()];
-
-			for (int i = 0; i < array.length(); i++) {
-				JSONObject currVidList = array.getJSONObject(i);
-				md5JSON[i] = currVidList.getJSONObject("file").getString("md5");
+		if (isOnline()) {
+			try {
+				printFilesInFolder(drive, folderId);
+				for (int i = 0; i < gdFiles.size(); i++) {
+					resultMD5.add(gdFiles.get(i).getGdFileMD5());
+				}
+				Log.d("md5 server size", String.valueOf(resultMD5.size()));
+			} catch (IOException e) {
+				Log.d("get md5 from server error", e.getLocalizedMessage());
 			}
 
-			set = new HashSet<String>(Arrays.asList(md5JSON));
-			Log.d("set", set.toString());
-		} catch (JSONException e) {
-			Log.d("je", "je");
-		}
-
-		if (!Arrays.deepEquals(md5FromServer, md5JSON) && md5JSON.length > 1) {
-			saveURLS(jsonObject);
-			Set<String> md5Set = new HashSet<String>(Arrays.asList(md5JSON));
-			SharedPreferences.Editor editor = preferences.edit();
-			editor.putStringSet("md5sApp", md5Set);
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putStringSet("md5sApp", resultMD5);
 			editor.commit();
+		} else {
+			resultMD5 = prefs.getStringSet("md5sApp", resultMD5);
 		}
-
-		else {
-			Set<String> md5Set = new HashSet<String>(
-					Arrays.asList(md5FromServer));
-			SharedPreferences.Editor editor = preferences.edit();
-			editor.putStringSet("md5sApp", md5Set);
-			editor.commit();
-		}
-		return md5FromServer;
+		return resultMD5;
 	}
 
-	private void saveURLS(JSONObject serverObject) {
-		Log.d("je", "sU");
-		SharedPreferences.Editor editor = context.getSharedPreferences(
-				K2Constants.APP_PREF, Context.MODE_PRIVATE).edit();
-		JSONArray array;
-		String[] urls = { "" };
-
-		try {
-			array = serverObject.getJSONArray("result");
-
-			urls = new String[array.length()];
-
-			for (int i = 0; i < array.length(); i++) {
-				JSONObject currVidList = array.getJSONObject(i);
-
-				urls[i] = currVidList.getString("file_webpath");
+	private void saveURLS() {
+		List<String> resultURL = new ArrayList<String>();
+		if (isOnline()) {
+			try {
+				Log.d("save urls", "save urls");
+				printFilesInFolder(drive, folderId);
+				for (int i = 0; i < gdFiles.size(); i++) {
+					resultURL.add(gdFiles.get(i).getGdFileName());
+				}
+			} catch (IOException e) {
+				Log.d("save url error", e.getLocalizedMessage());
 			}
-		} catch (JSONException e) {
-			Log.d("je", "je");
+			Collections.sort(resultURL, new Comparator<String>() {
+
+				@Override
+				public int compare(String lhs, String rhs) {
+					return lhs.toLowerCase(Locale.getDefault()).compareTo(
+							rhs.toLowerCase(Locale.getDefault()));
+				}
+
+			});
+			Log.d("saved urls", resultURL.toString());
+			Editor editor = prefs.edit();
+			editor.putString("urls", resultURL.toString());
+			Set<String> urlsSet = new HashSet<String>();
+			for (int i = 0; i < resultURL.size(); i++) {
+				urlsSet.add(context.getExternalFilesDir("")
+						+ K2Constants.VIDEO_DIR_NAME + resultURL.get(i));
+			}
+			editor.putStringSet("filesServer", urlsSet);
+			editor.commit();
 		}
-		Set<String> urlSet = new HashSet<String>(Arrays.asList(urls));
-		editor.putStringSet("urls", urlSet);
-		editor.commit();
 	}
 
-	public void sendDataToServer(Bundle sandParams) {
-		K2Request k2Request = new K2Request();
-		k2Request.sendDataToServer(sandParams, K2Constants.VIDEO_URLPREFIX
-				+ K2Constants.SEND_DATA_METHOD_NAME + K2Constants.GET_TYPE);
+	public boolean isOnline() {
+		ConnectivityManager connectivityManager = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo mobileInfo = connectivityManager
+				.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+		State mobile = NetworkInfo.State.DISCONNECTED;
+		if (mobileInfo != null) {
+			mobile = mobileInfo.getState();
+		}
+		NetworkInfo wifiInfo = connectivityManager
+				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		State wifi = NetworkInfo.State.DISCONNECTED;
+		if (wifiInfo != null) {
+			wifi = wifiInfo.getState();
+		}
+		boolean dataOnWifiOnly = (Boolean) PreferenceManager
+				.getDefaultSharedPreferences(context).getBoolean(
+						"data_wifi_only", true);
+		if ((!dataOnWifiOnly && (mobile.equals(NetworkInfo.State.CONNECTED) || wifi
+				.equals(NetworkInfo.State.CONNECTED)))
+				|| (dataOnWifiOnly && wifi.equals(NetworkInfo.State.CONNECTED))) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private void printFilesInFolder(Drive service, String folderId)
+			throws IOException {
+		Children.List request = service.children().list(folderId);
+
+		do {
+			try {
+				ChildList children = request.execute();
+
+				for (ChildReference child : children.getItems()) {
+
+					File file = drive.files().get(child.getId()).execute();
+					if (Arrays.asList(K2Constants.UNL_ACCEPTED_FILE_EXTS)
+							.contains(file.getFileExtension())
+							&& file.getFileSize() < K2Constants.UNL_MAX_FILE_SIZE) {
+						gdFiles.add(new GDFile(file.getId(), file.getTitle(),
+								file.getDownloadUrl(), String.valueOf(file
+										.getFileSize()), file
+										.getFileExtension(), file
+										.getMd5Checksum(), file));
+					}
+				}
+				request.setPageToken(children.getNextPageToken());
+			} catch (IOException e) {
+				System.out.println("An error occurred: " + e);
+				request.setPageToken(null);
+			}
+		} while (request.getPageToken() != null
+				&& request.getPageToken().length() > 0);
+
+	}
+
+	private Drive getDriveService(GoogleAccountCredential credential) {
+		return new Drive.Builder(AndroidHttp.newCompatibleTransport(),
+				new GsonFactory(), credential).build();
+	}
+
+	public List<GDFile> getGdFiles() {
+		return gdFiles;
+	}
+
+	public void setGdFiles(List<GDFile> gdFiles) {
+		this.gdFiles = gdFiles;
 	}
 
 }

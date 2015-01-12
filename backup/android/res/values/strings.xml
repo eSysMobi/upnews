@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <string name="app_name">upnews</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="todo">TODO</string>
+    <string name="app_name" tools:ignore="MissingTranslation">upnews | lite</string>
+    <string name="dummy_button" tools:ignore="MissingTranslation,MissingTranslation">Dummy Button</string>
+    <string name="dummy_content" tools:ignore="MissingTranslation">DUMMY\nCONTENT</string>
+    <string name="todo" tools:ignore="MissingTranslation">TODO</string>
+    <string name="add_gd" tools:ignore="MissingTranslation">Add Google Drive account</string>
 
 </resources>

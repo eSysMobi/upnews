@@ -1,121 +1,189 @@
 package mobi.esys.tasks;
 
-import java.io.File;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import mobi.esys.constants.K2Constants;
+import mobi.esys.data.GDFile;
 import mobi.esys.fileworks.DirectiryWorks;
-import mobi.esys.fileworks.FileWorks;
 import mobi.esys.upnews_server.K2Server;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.util.Log;
+
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpResponse;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.DriveScopes;
+import com.google.api.services.drive.model.File;
 
 public class DownloadVideoTask extends AsyncTask<Void, Void, Void> {
-	private transient String[] md5s;
 	private transient K2Server k2Server;
 	private transient Context context;
-	boolean isDelete;
+	private transient SharedPreferences prefs;
+	private transient String accName;
+	private transient boolean isDelete;
+	private transient List<GDFile> gdFiles;
+	private transient static Drive drive;
+	private transient GoogleAccountCredential credential;
+	private transient static FileOutputStream output;
+	private transient Set<String> serverMD5;
+	private transient int downCount;
+	private transient List<GDFile> listWithoutDuplicates;
+	private List<String> folderMD5;
 
 	public DownloadVideoTask(Context context) {
 		k2Server = new K2Server(context);
+		this.downCount = 0;
+		this.prefs = context.getSharedPreferences(K2Constants.APP_PREF,
+				Context.MODE_PRIVATE);
+		this.accName = prefs.getString("accName", "");
+		this.credential = GoogleAccountCredential.usingOAuth2(context,
+				DriveScopes.DRIVE);
+		this.credential.setSelectedAccountName(accName);
+		drive = getDriveService(credential);
 		this.context = context;
+
 	}
 
 	@Override
 	protected Void doInBackground(Void... params) {
-		String[] serverMD5 = k2Server.getMD5FromServer();
+		Log.d("down", "isDwonl");
+		serverMD5 = k2Server.getMD5FromServer();
+		gdFiles = k2Server.getGdFiles();
 		DirectiryWorks directiryWorks = new DirectiryWorks(
 				K2Constants.VIDEO_DIR_NAME);
-		String[] folderMD5 = directiryWorks.getMD5Sums();
+		folderMD5 = directiryWorks.getMD5Sums();
 		isDelete = context.getSharedPreferences(K2Constants.APP_PREF,
 				Context.MODE_PRIVATE).getBoolean("isDeleting", false);
 
-		if (!Arrays.deepEquals(serverMD5, folderMD5)) {
-			if (!isDelete) {
-				Set<String> urlSet = new HashSet<String>();
-				urlSet.add("");
-				Set<String> urlSetRec = context.getSharedPreferences(
-						K2Constants.APP_PREF, Context.MODE_PRIVATE)
-						.getStringSet("urls", urlSet);
-				SharedPreferences.Editor editor = context.getSharedPreferences(
-						K2Constants.APP_PREF, Context.MODE_PRIVATE).edit();
-				editor.putBoolean("isDownload", true);
-				editor.commit();
-				String[] urls = urlSetRec.toArray(new String[urlSetRec.size()]);
-				for (int i = 0; i < urls.length; i++) {
-					try {
-						videoFromUrlToDisk(urls[i]);
-					} catch (Exception e) {
-					}
+		if (!isDelete) {
+			Set<String> urlSet = new HashSet<String>();
+			urlSet.add("");
+			Set<String> urlSetRec = new HashSet<String>(Arrays.asList(context
+					.getSharedPreferences(K2Constants.APP_PREF,
+							Context.MODE_PRIVATE).getString("urls", "")
+					.replace("[", "").replace("]", "").split(",")));
+			SharedPreferences.Editor editor = context.getSharedPreferences(
+					K2Constants.APP_PREF, Context.MODE_PRIVATE).edit();
+			editor.putBoolean("isDownload", true);
+			editor.commit();
+
+			LinkedHashSet<GDFile> listToSet = new LinkedHashSet<GDFile>(gdFiles);
+
+			listWithoutDuplicates = new ArrayList<GDFile>(listToSet);
+
+			Log.d("drive files", String.valueOf(listWithoutDuplicates.size()));
+			Log.d("md5", String.valueOf(serverMD5.size()));
+			String[] urls = urlSetRec.toArray(new String[urlSetRec.size()]);
+			for (int i = 0; i < urls.length; i++) {
+				if (urls[i].startsWith(" ")) {
+					urls[i] = urls[i].substring(0, urls[i].length() - 1);
 				}
-			} else {
+			}
+
+			Collections.sort(listWithoutDuplicates, new Comparator<GDFile>() {
+				@Override
+				public int compare(GDFile lhs, GDFile rhs) {
+					return lhs.getGdFileName().compareTo(rhs.getGdFileName());
+				}
+			});
+			Log.d("files", listWithoutDuplicates.toString());
+
+			while (downCount < listWithoutDuplicates.size()) {
+				try {
+					Log.d("count", String.valueOf(downCount));
+					downloadFile(drive, listWithoutDuplicates.get(downCount)
+							.getGdFileInst());
+				} catch (Exception e) {
+					Log.d("exc", e.getLocalizedMessage());
+					downCount++;
+				}
+
+			}
+
+		} else {
+			Log.d("md5", "all MD5");
+			downCount++;
+			if (downCount == listWithoutDuplicates.size() - 1) {
 				cancel(true);
 			}
-		} else {
-			cancel(true);
 		}
 		return null;
 	}
 
-	public void videoFromUrlToDisk(final String vidURL) throws Exception {
-		Set<String> defSet = new HashSet<String>();
-		defSet.add(K2Constants.FIRST_MD5);
-		Set<String> md5Set = context.getSharedPreferences(K2Constants.APP_PREF,
-				Context.MODE_PRIVATE).getStringSet("md5sApp", defSet);
-		md5s = md5Set.toArray(new String[md5Set.size()]);
-		InputStream is = null;
-		final URL url = new URL(vidURL);
-		final HttpURLConnection urlConnection = (HttpURLConnection) url
-				.openConnection();
-		urlConnection.setRequestMethod("GET");
-		urlConnection.setDoOutput(true);
-		urlConnection.connect();
-		is = urlConnection.getInputStream();
-
-		File file = new File(Environment.getExternalStorageDirectory()
-				.getAbsolutePath() + K2Constants.VIDEO_DIR_NAME,
-				vidURL.substring(vidURL.lastIndexOf('/'), vidURL.length()));
-		if (!file.exists()) {
-			writeFile(is, file);
-
+	private void downloadFile(Drive service, File file) {
+		DirectiryWorks directiryWorks = new DirectiryWorks(
+				K2Constants.VIDEO_DIR_NAME);
+		folderMD5 = directiryWorks.getMD5Sums();
+		Log.d("down", "start down file");
+		if (folderMD5.containsAll(serverMD5)
+				&& folderMD5.size() == serverMD5.size()) {
+			cancel(true);
+			downCount++;
 		} else {
-			FileWorks fileWorks = new FileWorks(file.getPath());
-			if (!Arrays.asList(md5s).contains(fileWorks.getFileMD5())) {
-				writeFile(is, file);
+			if (!folderMD5.contains(file.getMd5Checksum())) {
+				if (file.getDownloadUrl() != null
+						&& file.getDownloadUrl().length() > 0) {
+					try {
+						HttpResponse resp = service
+								.getRequestFactory()
+								.buildGetRequest(
+										new GenericUrl(file.getDownloadUrl()))
+								.execute();
+						String root_sd = Environment
+								.getExternalStorageDirectory()
+								.getAbsolutePath()
+								+ K2Constants.VIDEO_DIR_NAME;
+						String path = file.getTitle();
+
+						java.io.File downFile = new java.io.File(root_sd, path);
+						Log.d("down", downFile.getAbsolutePath());
+						if (!downFile.exists()) {
+							output = new FileOutputStream(downFile);
+							int bufferSize = 1024;
+							byte[] buffer = new byte[bufferSize];
+							int len = 0;
+							while ((len = resp.getContent().read(buffer)) != -1) {
+								output.write(buffer, 0, len);
+							}
+
+							output.flush();
+							output.close();
+							downCount++;
+
+							Log.d("count down complete",
+									String.valueOf(downCount));
+							return;
+
+						}
+
+					} catch (IOException e) {
+						downCount++;
+						Log.d("count exc", String.valueOf(downCount));
+						Log.d("exc", e.getLocalizedMessage());
+						return;
+					}
+				}
+			} else {
+				Log.d("already down", String.valueOf(downCount));
+				downCount++;
+				return;
 			}
 		}
-
-		if (is != null) {
-			is.close();
-		}
-
-	}
-
-	private void writeFile(InputStream is, File f) throws Exception {
-		f.createNewFile();
-
-		FileOutputStream fos = new FileOutputStream(f);
-		byte[] buffer = new byte[1024];
-		int len1 = 0;
-
-		if (is != null) {
-			while ((len1 = is.read(buffer)) > 0) {
-				fos.write(buffer, 0, len1);
-
-			}
-		}
-		if (fos != null) {
-			fos.close();
-		}
-
 	}
 
 	@Override
@@ -133,11 +201,6 @@ public class DownloadVideoTask extends AsyncTask<Void, Void, Void> {
 	protected void onCancelled() {
 		super.onCancelled();
 		stopDownload();
-		if (!isDelete) {
-			DeleteBrokeFilesTask brokeFilesTask = new DeleteBrokeFilesTask(
-					context);
-			brokeFilesTask.execute();
-		}
 	}
 
 	private void stopDownload() {
@@ -145,6 +208,11 @@ public class DownloadVideoTask extends AsyncTask<Void, Void, Void> {
 				K2Constants.APP_PREF, Context.MODE_PRIVATE).edit();
 		editor.putBoolean("isDownload", false);
 		editor.commit();
+	}
+
+	private Drive getDriveService(GoogleAccountCredential credential) {
+		return new Drive.Builder(AndroidHttp.newCompatibleTransport(),
+				new GsonFactory(), credential).build();
 	}
 
 }

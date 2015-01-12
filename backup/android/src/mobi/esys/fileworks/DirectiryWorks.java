@@ -26,7 +26,7 @@ public class DirectiryWorks {
 		}
 	}
 
-	public String[] getDirFileList() {
+	public String[] getDirFileList(String mess) {
 		File videoDir = new File(Environment.getExternalStorageDirectory()
 				.getAbsolutePath() + this.directoryPath);
 		Log.d(DIR_WORKS_TAG, videoDir.getAbsolutePath());
@@ -34,8 +34,13 @@ public class DirectiryWorks {
 		if (videoDir.exists()) {
 			File[] files = videoDir.listFiles();
 			for (File file : files) {
-				filePaths.add(file.getPath());
+				if (file.exists()) {
+					filePaths.add(file.getPath());
+				} else {
+					continue;
+				}
 			}
+			Log.d("files dir works" + mess, filePaths.toString());
 		} else {
 			Log.d(DIR_WORKS_TAG, "folder don't exist");
 		}
@@ -49,20 +54,30 @@ public class DirectiryWorks {
 		Log.d(DIR_WORKS_TAG, "deleteFilesFromDir");
 		Log.d(DIR_WORKS_TAG, Environment.getExternalStorageDirectory()
 				.getAbsolutePath() + this.directoryPath);
+
+		Log.d("mask list task", maskList.toString());
 		if (videoDir.exists()) {
 			int ci = context.getSharedPreferences(K2Constants.APP_PREF,
 					Context.MODE_PRIVATE).getInt("currPlIndex", 0);
 
 			File[] files = videoDir.listFiles();
 
-			for (int i = 0; i < files.length; i++) {
-
-				if (maskList.contains(i)) {
-
-					if (files[i].exists()
-							&& (!files[i].getName().startsWith("dd"))
-							&& ci != i) {
+			if (maskList.size() == 1 && maskList.get(0) == 0) {
+				for (int i = 0; i < files.length; i++) {
+					if (!files[i].getName().startsWith("dd"))
 						files[i].delete();
+				}
+			} else {
+
+				for (int i = 0; i < files.length; i++) {
+
+					if (maskList.contains(i)) {
+
+						if (files[i].exists()
+								&& (!files[i].getName().startsWith("dd"))
+								&& ci != i) {
+							files[i].delete();
+						}
 					}
 				}
 			}
@@ -75,12 +90,15 @@ public class DirectiryWorks {
 		}
 	}
 
-	public String[] getMD5Sums() {
-		String[] files = getDirFileList();
-		String[] dirMD5s = new String[files.length];
+	public List<String> getMD5Sums() {
+		String[] files = getDirFileList("getMD5SUM");
+		List<String> dirMD5s = new ArrayList<String>();
 		for (int i = 0; i < files.length; i++) {
 			FileWorks fileWorks = new FileWorks(files[i]);
-			dirMD5s[i] = fileWorks.getFileMD5();
+			File file = new File(files[i]);
+			if (file.exists()) {
+				dirMD5s.add(fileWorks.getFileMD5());
+			}
 		}
 		return dirMD5s;
 	}

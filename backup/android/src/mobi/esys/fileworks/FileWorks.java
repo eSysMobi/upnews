@@ -74,4 +74,9 @@ public class FileWorks {
 		}
 		return result;
 	}
+
+	public String getFileName() {
+		File file = new File(filePath);
+		return file.getName();
+	}
 }
