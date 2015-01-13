@@ -11,12 +11,16 @@ import mobi.esys.tasks.DownloadVideoTask;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.MediaController;
+import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.VideoView;
 
 import com.google.analytics.tracking.android.EasyTracker;
@@ -60,6 +64,13 @@ public class FirstVideoActivity extends Activity {
 				&& md5sApp.size() == 0) {
 			setContentView(R.layout.activity_firstvideo);
 			controller = new MediaController(FirstVideoActivity.this);
+
+            for(int i=0;i<controller.getChildCount();i++){
+                if(controller.getChildAt(i) instanceof SeekBar||controller.getChildAt(i) instanceof ProgressBar){
+                    ((SeekBar)controller.getChildAt(i)).setProgressDrawable(new ColorDrawable(Color.RED));
+                }
+            }
+
 			video = (VideoView) findViewById(R.id.k2FirstVideoView);
 			video.setMediaController(controller);
 			uriPath = "android.resource://" + getPackageName() + "/assets/"
@@ -109,7 +120,7 @@ public class FirstVideoActivity extends Activity {
 
 		} else {
 			startActivity(new Intent(FirstVideoActivity.this,
-					FullscreenActivity.class));
+                    FullscreenActivity.class));
 			finish();
 			stopDownload();
 

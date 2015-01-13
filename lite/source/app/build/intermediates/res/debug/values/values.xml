@@ -94,7 +94,7 @@
     <string name="dummy_content" ns1:ignore="MissingTranslation">DUMMY\nCONTENT</string>
     <!-- From: file:/C:/AndroidStudioProjects/FromGitHub/upnews/lite/source/app/src/main/res/values/analytics.xml -->
     <eat-comment/>
-    <string name="ga_trackingId"> UA-48468788-4</string>
+    <string name="ga_trackingId">UA-48468788-4</string>
     <!-- From: file:/C:/AndroidStudioProjects/FromGitHub/upnews/lite/source/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/res/values/admob_strings.xml -->
     <eat-comment/>
     <string name="store_picture_message">"Allow Ad to store image in Picture gallery?"</string>
