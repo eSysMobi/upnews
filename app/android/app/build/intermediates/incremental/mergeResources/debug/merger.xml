@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="21.0.3"><source path="C:\AndroidStudioProjects\FromGitHub\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\res"/></dataSet><dataSet config="main"><source path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res"><file name="app_logo" path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res\drawable\app_logo.png" qualifiers="" type="drawable"/><file name="dropbox" path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res\drawable\dropbox.png" qualifiers="" type="drawable"/><file name="upnews_logo_w2" path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res\drawable\upnews_logo_w2.png" qualifiers="" type="drawable"/><file name="ic_launcher" path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res\drawable-hdpi\ic_launcher.png" qualifiers="hdpi-v4" type="drawable"/><file name="ic_launcher" path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res\drawable-mdpi\ic_launcher.png" qualifiers="mdpi-v4" type="drawable"/><file name="ic_launcher" path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res\drawable-xhdpi\ic_launcher.png" qualifiers="xhdpi-v4" type="drawable"/><file name="ic_launcher" path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res\drawable-xxhdpi\ic_launcher.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="ic_launcher" path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res\drawable-xxxhdpi\ic_launcher.png" qualifiers="xxxhdpi-v4" type="drawable"/><file name="activity_login" path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res\layout\activity_login.xml" qualifiers="" type="layout"/><file name="activity_splash" path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res\layout\activity_splash.xml" qualifiers="" type="layout"/><file name="activity_videofullscreen" path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res\layout\activity_videofullscreen.xml" qualifiers="" type="layout"/><file path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res\values\analytics.xml" qualifiers=""><string name="ga_trackingId">UA-48468788-1</string><bool name="ga_reportUncaughtExceptions">true</bool><bool name="ga_autoActivityTracking">true</bool></file><file path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res\values\attrs.xml" qualifiers=""><declare-styleable name="ButtonBarContainerTheme">
+        <attr format="reference" name="buttonBarStyle"/>
+        <attr format="reference" name="buttonBarButtonStyle"/>
+    </declare-styleable></file><file path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res\values\colors.xml" qualifiers=""><color name="black_overlay">#66000000</color></file><file path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res\values\ids.xml" qualifiers=""><item name="surfaceHolder" type="id"/></file><file path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res\values\strings.xml" qualifiers=""><string name="todo">TODO</string><string name="dummy_button">Dummy Button</string><string name="app_name">upnews</string><string name="dummy_content">DUMMY\nCONTENT</string></file><file path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res\values\styles.xml" qualifiers=""><style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style><style name="ButtonBarButton"/><style name="ButtonBar">
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:background">@android:drawable/bottom_bar</item>
+    </style><style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="buttonBarStyle">@style/ButtonBar</item>
+        <item name="buttonBarButtonStyle">@style/ButtonBarButton</item>
+    </style><style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+
+        -->
+    </style></file><file path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res\values-v11\styles.xml" qualifiers="v11"><style name="FullscreenTheme" parent="android:Theme.Holo">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="buttonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="buttonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style><style name="AppBaseTheme" parent="android:Theme.Holo.Light">
+        <!-- API 11 theme customizations can go here. -->
+    </style><style name="FullscreenActionBarStyle" parent="android:Widget.Holo.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style></file><file path="C:\AndroidStudioProjects\FromGitHub\android\app\src\main\res\values-v14\styles.xml" qualifiers="v14"><style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!-- API 14 theme customizations can go here. -->
+    </style></file></source><source path="C:\AndroidStudioProjects\FromGitHub\android\app\build\generated\res\rs\debug"/><source path="C:\AndroidStudioProjects\FromGitHub\android\app\build\generated\res\generated\debug"/></dataSet><dataSet config="debug"><source path="C:\AndroidStudioProjects\FromGitHub\android\app\src\debug\res"/></dataSet><mergedItems><configuration qualifiers=""><declare-styleable name="ButtonBarContainerTheme"><attr format="reference" name="buttonBarStyle"/><attr format="reference" name="buttonBarButtonStyle"/></declare-styleable></configuration></mergedItems></merger>

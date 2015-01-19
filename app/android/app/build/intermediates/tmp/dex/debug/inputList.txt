@@ -1,0 +1,5 @@
+C:\AndroidStudioProjects\FromGitHub\android\app\build\intermediates\classes\debug
+C:\AndroidStudioProjects\FromGitHub\android\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-a41bf6d77ae71ad2c9e9a5420ef6c2aa6fe0e7c1.jar
+C:\AndroidStudioProjects\FromGitHub\android\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-860d6e4b45bb36697507f708c9245370b18edc01.jar
+C:\AndroidStudioProjects\FromGitHub\android\app\build\intermediates\pre-dexed\debug\classes-58ab19e82c47ed2cd8d73dc18323b2c80ea38f5f.jar
+C:\AndroidStudioProjects\FromGitHub\android\app\build\intermediates\pre-dexed\debug\libGoogleAnalyticsServices-699e47dbbb9f106a697710a1c18ca02e3f90c16c.jar

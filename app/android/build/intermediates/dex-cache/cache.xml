@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\android\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-860d6e4b45bb36697507f708c9245370b18edc01.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\android\app\build\intermediates\pre-dexed\debug\classes-58ab19e82c47ed2cd8d73dc18323b2c80ea38f5f.jar" />
+    </item>
+    <item
+        jar="C:\adt-bundle-windows-x86_64-20140702\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\android\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-a41bf6d77ae71ad2c9e9a5420ef6c2aa6fe0e7c1.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\android\app\libs\libGoogleAnalyticsServices.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e887c6c9b31b39a39b0eaba981448b78902ea813">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\android\app\build\intermediates\pre-dexed\debug\libGoogleAnalyticsServices-699e47dbbb9f106a697710a1c18ca02e3f90c16c.jar" />
+    </item>
+
+</items>
