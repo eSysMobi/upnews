@@ -24,24 +24,31 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class color {
         public static final int black_overlay=0x7f050000;
+        public static final int seekbartheme_color=0x7f050001;
     }
     public static final class drawable {
         public static final int app_logo=0x7f020000;
-        public static final int dropbox=0x7f020001;
-        public static final int ic_launcher=0x7f020002;
-        public static final int upnews_logo_w2=0x7f020003;
+        public static final int ic_launcher=0x7f020001;
+        public static final int seekbartheme_scrubber_control_disabled_holo=0x7f020002;
+        public static final int seekbartheme_scrubber_control_focused_holo=0x7f020003;
+        public static final int seekbartheme_scrubber_control_normal_holo=0x7f020004;
+        public static final int seekbartheme_scrubber_control_pressed_holo=0x7f020005;
+        public static final int seekbartheme_scrubber_control_selector_holo_dark=0x7f020006;
+        public static final int seekbartheme_scrubber_primary_holo=0x7f020007;
+        public static final int seekbartheme_scrubber_progress_horizontal_holo_dark=0x7f020008;
+        public static final int seekbartheme_scrubber_secondary_holo=0x7f020009;
+        public static final int seekbartheme_scrubber_track_holo_dark=0x7f02000a;
+        public static final int upnews_logo_w2=0x7f02000b;
     }
     public static final class id {
-        public static final int dropBoxBtn=0x7f060001;
-        public static final int fullscreenLayout=0x7f060002;
-        public static final int imageView1=0x7f060004;
-        public static final int k2VideoView=0x7f060003;
+        public static final int fullscreenLayout=0x7f060001;
+        public static final int imageView1=0x7f060003;
+        public static final int k2VideoView=0x7f060002;
         public static final int surfaceHolder=0x7f060000;
     }
     public static final class layout {
-        public static final int activity_login=0x7f030000;
-        public static final int activity_splash=0x7f030001;
-        public static final int activity_videofullscreen=0x7f030002;
+        public static final int activity_splash=0x7f030000;
+        public static final int activity_videofullscreen=0x7f030001;
     }
     public static final class string {
         public static final int app_name=0x7f070000;
@@ -66,8 +73,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int AppTheme=0x7f080001;
         public static final int ButtonBar=0x7f080002;
         public static final int ButtonBarButton=0x7f080003;
-        public static final int FullscreenActionBarStyle=0x7f080005;
+        public static final int FullscreenActionBarStyle=0x7f080007;
         public static final int FullscreenTheme=0x7f080004;
+        public static final int SeekBarSeekBarTheme=0x7f080005;
+        public static final int SeekBarTheme=0x7f080006;
     }
     public static final class styleable {
         /** Attributes that can be used with a ButtonBarContainerTheme.

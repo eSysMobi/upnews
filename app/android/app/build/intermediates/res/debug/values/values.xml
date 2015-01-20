@@ -7,6 +7,9 @@
     <!-- From: file:/C:/AndroidStudioProjects/FromGitHub/android/app/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="black_overlay">#66000000</color>
+    <!-- From: file:/C:/AndroidStudioProjects/FromGitHub/android/app/src/main/res/values/colors_seekbartheme.xml -->
+    <eat-comment/>
+    <color name="seekbartheme_color">#ff0000</color>
     <declare-styleable name="ButtonBarContainerTheme"><attr format="reference" name="buttonBarStyle"/><attr format="reference" name="buttonBarButtonStyle"/></declare-styleable>
     <!-- From: file:/C:/AndroidStudioProjects/FromGitHub/android/app/src/main/res/values/ids.xml -->
     <eat-comment/>
@@ -49,4 +52,18 @@
         <item name="buttonBarStyle">@style/ButtonBar</item>
         <item name="buttonBarButtonStyle">@style/ButtonBarButton</item>
     </style>
+    <!-- From: file:/C:/AndroidStudioProjects/FromGitHub/android/app/src/main/res/values/styles_seekbartheme.xml -->
+    <eat-comment/>
+    <style name="SeekBarSeekBarTheme" parent="android:Widget.Holo.SeekBar">
+      <item name="android:progressDrawable">@drawable/seekbartheme_scrubber_progress_horizontal_holo_dark</item>
+      <item name="android:indeterminateDrawable">@drawable/seekbartheme_scrubber_progress_horizontal_holo_dark</item>
+      <item name="android:thumb">@drawable/seekbartheme_scrubber_control_selector_holo_dark</item>
+  </style>
+    <!-- From: file:/C:/AndroidStudioProjects/FromGitHub/android/app/src/main/res/values/themes_seekbartheme.xml -->
+    <eat-comment/>
+    <style name="SeekBarTheme" parent="android:Theme.Holo">
+
+    <item name="android:seekBarStyle">@style/SeekBarSeekBarTheme</item>
+
+  </style>
 </resources>

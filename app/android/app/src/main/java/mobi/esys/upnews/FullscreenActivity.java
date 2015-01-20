@@ -368,7 +368,7 @@ public class FullscreenActivity extends Activity implements LocationListener,
 
             face_count = face_detector.findFaces(background_image, faces);
 
-           Toast.makeText(FullscreenActivity.this,"Лиц:"+String.valueOf(face_count),Toast.LENGTH_SHORT).show();
+           Toast.makeText(FullscreenActivity.this,"Faces:"+String.valueOf(face_count),Toast.LENGTH_SHORT).show();
 
 
 

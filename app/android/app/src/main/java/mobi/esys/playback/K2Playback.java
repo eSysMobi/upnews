@@ -11,6 +11,8 @@ import mobi.esys.fileworks.FileWorks;
 import mobi.esys.tasks.DownloadVideoTask;
 import mobi.esys.tasks.SendDataToServerTask;
 import mobi.esys.upnews.FullscreenActivity;
+import mobi.esys.upnews.R;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
@@ -20,7 +22,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.SeekBar;
 import android.widget.VideoView;
 
 import com.google.analytics.tracking.android.EasyTracker;
@@ -39,11 +43,13 @@ public class K2Playback {
 	private transient Bundle sendBundle;
 	private transient String[] ulrs = { "" };
 	private transient int serverIndex = 1;
+    private transient MediaController controller;
 
 	public K2Playback(Context context, String folderPath) {
 		super();
+        this.controller=new MediaController(context);
 		this.k2VideoView = ((FullscreenActivity) context).getVideoView();
-		this.k2VideoView.setMediaController(new MediaController(context));
+		this.k2VideoView.setMediaController(controller);
 		this.k2VideoView.requestFocus();
 		this.context = context;
 		this.sendBundle = new Bundle();
@@ -52,6 +58,9 @@ public class K2Playback {
 				context.getSharedPreferences(K2Constants.APP_PREF,
 						Context.MODE_PRIVATE).getString("device_id", "0000"));
 		this.folderPath = folderPath;
+
+
+
 	}
 
 	public void playFile(String filePath) {
@@ -91,6 +100,30 @@ public class K2Playback {
 	}
 
 	public void playFolder() {
+
+        this.k2VideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                LinearLayout ll=(LinearLayout)controller.getChildAt (0);
+
+                for (int i = 0; i < ll.getChildCount(); i++)
+                {
+
+                    if (ll.getChildAt(i) instanceof  LinearLayout){
+                        LinearLayout llC=(LinearLayout)ll.getChildAt(i);
+                        for (int j = 0;j < llC.getChildCount(); j++) {
+                            if(llC.getChildAt(j) instanceof SeekBar){
+                                SeekBar seekBar=(SeekBar)llC.getChildAt(j);
+                                seekBar.setProgressDrawable(context.getResources().getDrawable(R.drawable.seekbartheme_scrubber_progress_horizontal_holo_dark));
+                                seekBar.setThumb(context.getResources().getDrawable(R.drawable.seekbartheme_scrubber_control_selector_holo_dark));
+                            }
+                        }
+                    }
+
+                }
+            }
+        });
+
 		downloadVideoTask = new DownloadVideoTask(context);
 		downloadVideoTask.execute();
 		DirectiryWorks directiryWorks = new DirectiryWorks(folderPath);
@@ -240,5 +273,7 @@ public class K2Playback {
 				context);
 		dataToServerTask.execute(bundle);
 	}
+
+
 
 }
