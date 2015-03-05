@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="C:\UNL_DOWN_TEMP_FORK\sAXRSSReader\src\main\res"/><source path="C:\UNL_DOWN_TEMP_FORK\sAXRSSReader\build\generated\res\rs\debug"/><source path="C:\UNL_DOWN_TEMP_FORK\sAXRSSReader\build\generated\res\generated\debug"/></dataSet><dataSet config="debug"><source path="C:\UNL_DOWN_TEMP_FORK\sAXRSSReader\src\debug\res"/></dataSet><mergedItems/></merger>

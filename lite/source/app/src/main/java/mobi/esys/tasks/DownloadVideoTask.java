@@ -1,7 +1,23 @@
 package mobi.esys.tasks;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Environment;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpResponse;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.model.File;
+import com.google.common.io.ByteStreams;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,208 +27,267 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import mobi.esys.constants.K2Constants;
+import mobi.esys.constants.UNLConsts;
 import mobi.esys.data.GDFile;
-import mobi.esys.fileworks.DirectiryWorks;
-import mobi.esys.upnews_server.K2Server;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.os.Environment;
-import android.util.Log;
-
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.http.GenericUrl;
-import com.google.api.client.http.HttpResponse;
-import com.google.api.client.json.gson.GsonFactory;
-import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.DriveScopes;
-import com.google.api.services.drive.model.File;
+import mobi.esys.fileworks.DirectoryWorks;
+import mobi.esys.fileworks.FileWorks;
+import mobi.esys.net.NetWork;
+import mobi.esys.system.SysWork;
+import mobi.esys.upnews_server.UNLServer;
+import mobi.esys.upnewslite.R;
+import mobi.esys.upnewslite.UNLApp;
 
 public class DownloadVideoTask extends AsyncTask<Void, Void, Void> {
-	private transient K2Server k2Server;
-	private transient Context context;
-	private transient SharedPreferences prefs;
-	private transient String accName;
-	private transient boolean isDelete;
-	private transient List<GDFile> gdFiles;
-	private transient static Drive drive;
-	private transient GoogleAccountCredential credential;
-	private transient static FileOutputStream output;
-	private transient Set<String> serverMD5;
-	private transient int downCount;
-	private transient List<GDFile> listWithoutDuplicates;
-	private List<String> folderMD5;
+    private transient Context context;
+    private transient SharedPreferences prefs;
+    private transient boolean isDelete;
+    private transient List<GDFile> gdFiles;
+    private transient static FileOutputStream output;
+    private transient Set<String> serverMD5;
+    private transient int downCount;
+    private transient List<GDFile> listWithoutDuplicates;
+    private transient List<String> folderMD5;
+    private transient Drive drive;
+    private transient UNLApp mApp;
+    private transient UNLServer server;
 
-	public DownloadVideoTask(Context context) {
-		k2Server = new K2Server(context);
-		this.downCount = 0;
-		this.prefs = context.getSharedPreferences(K2Constants.APP_PREF,
-				Context.MODE_PRIVATE);
-		this.accName = prefs.getString("accName", "");
-		this.credential = GoogleAccountCredential.usingOAuth2(context,
-				DriveScopes.DRIVE);
-		this.credential.setSelectedAccountName(accName);
-		drive = getDriveService(credential);
-		this.context = context;
+    public DownloadVideoTask(UNLApp app) {
+        downCount = 0;
+        mApp = app;
+        context = app.getApplicationContext();
+        prefs = app.getApplicationContext().getSharedPreferences(UNLConsts.APP_PREF, Context.MODE_PRIVATE);
+        drive = app.getDriveService();
+        server = new UNLServer(app);
 
-	}
+    }
 
-	@Override
-	protected Void doInBackground(Void... params) {
-		Log.d("down", "isDwonl");
-		serverMD5 = k2Server.getMD5FromServer();
-		gdFiles = k2Server.getGdFiles();
-		DirectiryWorks directiryWorks = new DirectiryWorks(
-				K2Constants.VIDEO_DIR_NAME);
-		folderMD5 = directiryWorks.getMD5Sums();
-		isDelete = context.getSharedPreferences(K2Constants.APP_PREF,
-				Context.MODE_PRIVATE).getBoolean("isDeleting", false);
+    @Override
+    protected Void doInBackground(Void... params) {
 
-		if (!isDelete) {
-			Set<String> urlSet = new HashSet<String>();
-			urlSet.add("");
-			Set<String> urlSetRec = new HashSet<String>(Arrays.asList(context
-					.getSharedPreferences(K2Constants.APP_PREF,
-							Context.MODE_PRIVATE).getString("urls", "")
-					.replace("[", "").replace("]", "").split(",")));
-			SharedPreferences.Editor editor = context.getSharedPreferences(
-					K2Constants.APP_PREF, Context.MODE_PRIVATE).edit();
-			editor.putBoolean("isDownload", true);
-			editor.commit();
+        if (NetWork.isNetworkAvailable(mApp)) {
+            if (!isDelete) {
+                Log.d("down", "isDownload");
 
-			LinkedHashSet<GDFile> listToSet = new LinkedHashSet<GDFile>(gdFiles);
+                serverMD5 = server.getMD5FromServer();
+                gdFiles = server.getGdFiles();
+                DirectoryWorks directoryWorks = new DirectoryWorks(
+                        UNLConsts.VIDEO_DIR_NAME);
+                folderMD5 = directoryWorks.getMD5Sums();
+                isDelete = prefs.getBoolean("isDeleting", false);
 
-			listWithoutDuplicates = new ArrayList<GDFile>(listToSet);
+                Set<String> urlSet = new HashSet<>();
+                urlSet.add("");
+                Set<String> urlSetRec = new HashSet<>(Arrays.asList(context
+                        .getSharedPreferences(UNLConsts.APP_PREF,
+                                Context.MODE_PRIVATE).getString("urls", "")
+                        .replace("[", "").replace("]", "").split(",")));
+                SharedPreferences.Editor editor = context.getSharedPreferences(
+                        UNLConsts.APP_PREF, Context.MODE_PRIVATE).edit();
+                editor.putBoolean("isDownload", true);
+                editor.commit();
 
-			Log.d("drive files", String.valueOf(listWithoutDuplicates.size()));
-			Log.d("md5", String.valueOf(serverMD5.size()));
-			String[] urls = urlSetRec.toArray(new String[urlSetRec.size()]);
-			for (int i = 0; i < urls.length; i++) {
-				if (urls[i].startsWith(" ")) {
-					urls[i] = urls[i].substring(0, urls[i].length() - 1);
-				}
-			}
+                LinkedHashSet<GDFile> listToSet = new LinkedHashSet<GDFile>(gdFiles);
 
-			Collections.sort(listWithoutDuplicates, new Comparator<GDFile>() {
-				@Override
-				public int compare(GDFile lhs, GDFile rhs) {
-					return lhs.getGdFileName().compareTo(rhs.getGdFileName());
-				}
-			});
-			Log.d("files", listWithoutDuplicates.toString());
+                listWithoutDuplicates = new ArrayList<>(listToSet);
 
-			while (downCount < listWithoutDuplicates.size()) {
-				try {
-					Log.d("count", String.valueOf(downCount));
-					downloadFile(drive, listWithoutDuplicates.get(downCount)
-							.getGdFileInst());
-				} catch (Exception e) {
-					Log.d("exc", e.getLocalizedMessage());
-					downCount++;
-				}
+                Log.d("drive files", String.valueOf(listWithoutDuplicates.size()));
+                Log.d("md5", String.valueOf(serverMD5.size()));
+                String[] urls = urlSetRec.toArray(new String[urlSetRec.size()]);
+                for (int i = 0; i < urls.length; i++) {
+                    if (urls[i].startsWith(" ")) {
+                        urls[i] = urls[i].substring(0, urls[i].length() - 1);
+                    }
+                }
 
-			}
 
-		} else {
-			Log.d("md5", "all MD5");
-			downCount++;
-			if (downCount == listWithoutDuplicates.size() - 1) {
-				cancel(true);
-			}
-		}
-		return null;
-	}
+                Collections.sort(listWithoutDuplicates, new Comparator<GDFile>() {
+                    @Override
+                    public int compare(GDFile lhs, GDFile rhs) {
+                        return lhs.getGdFileName().compareTo(rhs.getGdFileName());
+                    }
+                });
 
-	private void downloadFile(Drive service, File file) {
-		DirectiryWorks directiryWorks = new DirectiryWorks(
-				K2Constants.VIDEO_DIR_NAME);
-		folderMD5 = directiryWorks.getMD5Sums();
-		Log.d("down", "start down file");
-		if (folderMD5.containsAll(serverMD5)
-				&& folderMD5.size() == serverMD5.size()) {
-			cancel(true);
-			downCount++;
-		} else {
-			if (!folderMD5.contains(file.getMd5Checksum())) {
-				if (file.getDownloadUrl() != null
-						&& file.getDownloadUrl().length() > 0) {
-					try {
-						HttpResponse resp = service
-								.getRequestFactory()
-								.buildGetRequest(
-										new GenericUrl(file.getDownloadUrl()))
-								.execute();
-						String root_sd = Environment
-								.getExternalStorageDirectory()
-								.getAbsolutePath()
-								+ K2Constants.VIDEO_DIR_NAME;
-						String path = file.getTitle();
+                Log.d("files", listWithoutDuplicates.toString());
 
-						java.io.File downFile = new java.io.File(root_sd, path);
-						Log.d("down", downFile.getAbsolutePath());
-						if (!downFile.exists()) {
-							output = new FileOutputStream(downFile);
-							int bufferSize = 1024;
-							byte[] buffer = new byte[bufferSize];
-							int len = 0;
-							while ((len = resp.getContent().read(buffer)) != -1) {
-								output.write(buffer, 0, len);
-							}
 
-							output.flush();
-							output.close();
-							downCount++;
+                while (downCount < listWithoutDuplicates.size()) {
+                    try {
+                        Log.d("count", String.valueOf(downCount));
+                        downloadFile(drive, listWithoutDuplicates.get(downCount)
+                                .getGdFileInst());
+                    } catch (Exception e) {
+                        Log.d("exc", e.getLocalizedMessage());
+                        downCount++;
+                    }
 
-							Log.d("count down complete",
-									String.valueOf(downCount));
-							return;
 
-						}
+                }
 
-					} catch (IOException e) {
-						downCount++;
-						Log.d("count exc", String.valueOf(downCount));
-						Log.d("exc", e.getLocalizedMessage());
-						return;
-					}
-				}
-			} else {
-				Log.d("already down", String.valueOf(downCount));
-				downCount++;
-				return;
-			}
-		}
-	}
+            } else {
+                Log.d("md5", "all MD5");
+                downCount++;
+                if (downCount == listWithoutDuplicates.size() - 1) {
+                    cancel(true);
+                }
+            }
+        } else {
+            cancel(true);
+        }
+        return null;
+    }
 
-	@Override
-	protected void onPostExecute(Void result) {
-		super.onPostExecute(result);
-		stopDownload();
-		if (!isDelete) {
-			DeleteBrokeFilesTask brokeFilesTask = new DeleteBrokeFilesTask(
-					context);
-			brokeFilesTask.execute();
-		}
-	}
+    private void downloadFile(Drive service, File file) {
+        SysWork.trimCache(mApp);
 
-	@Override
-	protected void onCancelled() {
-		super.onCancelled();
-		stopDownload();
-	}
+        if (file.getFileSize() < Environment.getExternalStorageDirectory().getUsableSpace()) {
+            DirectoryWorks directoryWorks = new DirectoryWorks(
+                    UNLConsts.VIDEO_DIR_NAME);
+            folderMD5 = directoryWorks.getMD5Sums();
+            Log.d("down", "start down file");
+            if (folderMD5.containsAll(serverMD5)
+                    && folderMD5.size() == serverMD5.size()) {
+                cancel(true);
+                downCount++;
+            } else {
+                if (!folderMD5.contains(file.getMd5Checksum())) {
+                    if (file.getDownloadUrl() != null
+                            && file.getDownloadUrl().length() > 0) {
+                        try {
+                            HttpResponse resp = service
+                                    .getRequestFactory()
+                                    .buildGetRequest(
+                                            new GenericUrl(file.getDownloadUrl()))
+                                    .execute();
+                            String root_sd = Environment
+                                    .getExternalStorageDirectory()
+                                    .getAbsolutePath()
+                                    + UNLConsts.VIDEO_DIR_NAME;
+                            String path = file.getTitle().substring(0, file.getTitle().indexOf(".")).concat(".").concat(UNLConsts.TEMP_FILE_EXT);
+                            Log.d("down", path);
+                            java.io.File downFile = new java.io.File(root_sd, path);
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putString("currDownFile", downFile.getAbsolutePath());
+                            editor.commit();
+                            FileWorks fileWorks = new FileWorks(downFile.getAbsolutePath());
+                            Log.d("down", downFile.getAbsolutePath());
+                            if (!downFile.exists()) {
+                                output = new FileOutputStream(downFile);
+                                int bufferSize = 1024;
+                                byte[] buffer = new byte[bufferSize];
+                                int len = 0;
+                                while ((len = resp.getContent().read(buffer)) != -1) {
+                                    output.write(buffer, 0, len);
+                                }
 
-	private void stopDownload() {
-		SharedPreferences.Editor editor = context.getSharedPreferences(
-				K2Constants.APP_PREF, Context.MODE_PRIVATE).edit();
-		editor.putBoolean("isDownload", false);
-		editor.commit();
-	}
+                                output.flush();
+                                output.close();
 
-	private Drive getDriveService(GoogleAccountCredential credential) {
-		return new Drive.Builder(AndroidHttp.newCompatibleTransport(),
-				new GsonFactory(), credential).build();
-	}
+
+                                if (serverMD5.contains(fileWorks.getFileMD5())) {
+                                    fileWorks.renameFileExtension(file.getFileExtension());
+                                    downCount++;
+
+                                    Log.d("count down complete",
+                                            String.valueOf(downCount));
+                                    return;
+
+
+                                } else {
+                                    downCount++;
+                                    return;
+                                }
+
+
+                            } else if (downFile.exists() && UNLConsts.TEMP_FILE_EXT.equals(fileWorks.getFileExtension()) && !serverMD5.contains(fileWorks.getFileMD5()) && downFile.length() < file.getFileSize()) {
+                                Log.d("down_tag", fileWorks.getFileExtension());
+
+                                output = new FileOutputStream(downFile, true);
+                                int bufferSize = 1024;
+                                byte[] buffer = new byte[bufferSize];
+                                int len = 0;
+                                InputStream inputStream = resp.getContent();
+
+                                long skipped = inputStream.skip(file.getFileSize() - downFile.length());
+                                Log.d("down_tag", String.valueOf(file.getFileSize() - downFile.length()) + ":" + String.valueOf(skipped));
+                                if (skipped < file.getFileSize() - downFile.length()) {
+                                    append(downFile, ByteStreams.toByteArray(inputStream));
+                                } else {
+                                    downFile.delete();
+                                }
+
+                                if (serverMD5.contains(fileWorks.getFileMD5())) {
+                                    fileWorks.renameFileExtension(file.getFileExtension());
+                                    downCount++;
+
+                                    Log.d("count down complete",
+                                            String.valueOf(downCount));
+                                    return;
+
+
+                                } else {
+                                    downCount++;
+                                    return;
+                                }
+
+
+                            }
+
+                        } catch (IOException e) {
+                            downCount++;
+                            Log.d("count exc", String.valueOf(downCount));
+                            Log.d("exc", e.getLocalizedMessage());
+                            return;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    Log.d("already down", String.valueOf(downCount));
+                    downCount++;
+                    return;
+                }
+            }
+        } else {
+            cancel(true);
+            ((Activity) context).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(context, context.getResources().getString(R.string.empty_space), Toast.LENGTH_LONG);
+                }
+            });
+        }
+    }
+
+
+    @Override
+    protected void onPostExecute(Void result) {
+        super.onPostExecute(result);
+        stopDownload();
+        if (!isDelete) {
+            DeleteBrokeFilesTask brokeFilesTask = new DeleteBrokeFilesTask(mApp);
+            brokeFilesTask.execute();
+        }
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        stopDownload();
+    }
+
+    private void stopDownload() {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("isDownload", false);
+        editor.apply();
+    }
+
+    public static void append(java.io.File file, byte[] bytes) throws Exception {
+        long fileLength = file.length();
+        RandomAccessFile raf = new RandomAccessFile(file, "rw");
+        raf.seek(fileLength);
+        raf.write(bytes);
+        raf.close();
+    }
+
 
 }

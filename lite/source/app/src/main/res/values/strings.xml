@@ -6,5 +6,6 @@
     <string name="dummy_content" tools:ignore="MissingTranslation">DUMMY\nCONTENT</string>
     <string name="todo" tools:ignore="MissingTranslation">TODO</string>
     <string name="add_gd" tools:ignore="MissingTranslation">Add Google Drive account</string>
+    <string name="empty_space" tools:ignore="MissingTranslation">На носителе не осталось свободной памяти.Новые файлы не будут скачиваться пока вы не освободите место.</string>
 
 </resources>

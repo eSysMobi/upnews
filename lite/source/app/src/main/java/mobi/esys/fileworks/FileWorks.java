@@ -1,5 +1,8 @@
 package mobi.esys.fileworks;
 
+import android.util.Log;
+
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,75 +11,116 @@ import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FileWorks {
-	private transient String filePath;
+    private transient File file;
 
-	public FileWorks(String filePath) {
-		super();
-		this.filePath = filePath;
-	}
+    public FileWorks(String filePath) {
+        super();
+        this.file = new File(filePath);
+    }
 
-	public void createFile() {
-		File file = new File(filePath);
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-			}
-		}
-	}
+    public void createFile() {
 
-	public void deleteFile() {
-		File file = new File(filePath);
-		if (!Arrays.asList(file.getName()).contains("dd")) {
-			file.delete();
-		}
-	}
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+            }
+        }
+    }
 
-	private static byte[] createChecksum(String filename) {
-		InputStream fis;
-		byte[] sum = new byte[1];
-		try {
-			fis = new FileInputStream(filename);
+    public void deleteFile() {
+        if (!Arrays.asList(file.getName()).contains("dd")) {
+            file.delete();
+        }
+    }
 
-			byte[] buffer = new byte[1024];
-			MessageDigest complete = MessageDigest.getInstance("MD5");
-			int numRead;
+    private static byte[] createChecksum(String filename) {
+        InputStream fis;
+        byte[] sum = new byte[1];
+        try {
+            fis = new FileInputStream(filename);
 
-			do {
-				numRead = fis.read(buffer);
-				if (numRead > 0) {
-					complete.update(buffer, 0, numRead);
-				}
-			} while (numRead != -1);
+            byte[] buffer = new byte[1024];
+            MessageDigest complete = MessageDigest.getInstance("MD5");
+            int numRead;
 
-			fis.close();
-			sum = complete.digest();
+            do {
+                numRead = fis.read(buffer);
+                if (numRead > 0) {
+                    complete.update(buffer, 0, numRead);
+                }
+            } while (numRead != -1);
 
-		} catch (FileNotFoundException e) {
-		} catch (NoSuchAlgorithmException e) {
-		} catch (IOException e) {
-		}
+            fis.close();
+            sum = complete.digest();
 
-		return sum;
-	}
+        } catch (FileNotFoundException e) {
+        } catch (NoSuchAlgorithmException e) {
+        } catch (IOException e) {
+        }
 
-	public String getFileMD5() {
-		byte[] b;
+        return sum;
+    }
 
-		b = createChecksum(filePath);
+    public String getFileMD5() {
+        byte[] b;
 
-		String result = "";
+        b = createChecksum(file.getAbsolutePath());
 
-		for (int i = 0; i < b.length; i++) {
-			result += Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1);
-		}
-		return result;
-	}
+        String result = "";
 
-	public String getFileName() {
-		File file = new File(filePath);
-		return file.getName();
-	}
+        for (int i = 0; i < b.length; i++) {
+            result += Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1);
+        }
+        return result;
+    }
+
+    public String getFileName() {
+        return file.getName();
+    }
+
+    public String getFileExtension() {
+        String ext = "";
+        String name = getFileName();
+        int i = name.lastIndexOf('.');
+        if (i > 0 && i < name.length() - 1) {
+            ext = name.substring(i + 1);
+        }
+        Log.d("fw_tag", ext);
+        return ext;
+    }
+
+    public byte[] fileToBytes() {
+        int size = (int) file.length();
+        byte[] bytes = new byte[size];
+        try {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+            buf.read(bytes, 0, bytes.length);
+            buf.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bytes;
+    }
+
+    public boolean renameFileExtension(String newExtension) {
+        String target;
+        String currentExtension = getFileExtension();
+        String path = file.getAbsolutePath();
+
+        if (currentExtension.equals("")) {
+            target = path + "." + newExtension;
+        } else {
+            target = path.replaceFirst(Pattern.quote("." +
+                    currentExtension) + "$", Matcher.quoteReplacement("." + newExtension));
+
+        }
+        return new File(path).renameTo(new File(target));
+    }
 }

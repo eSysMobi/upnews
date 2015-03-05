@@ -365,23 +365,24 @@ containing a value of this type.
         public static final int common_signin_btn_light_text_disabled=0x7f060008;
         public static final int common_signin_btn_light_text_focused=0x7f060009;
         public static final int common_signin_btn_light_text_pressed=0x7f06000a;
-        public static final int common_signin_btn_text_dark=0x7f060018;
-        public static final int common_signin_btn_text_light=0x7f060019;
-        public static final int wallet_bright_foreground_disabled_holo_light=0x7f06000b;
-        public static final int wallet_bright_foreground_holo_dark=0x7f06000c;
-        public static final int wallet_bright_foreground_holo_light=0x7f06000d;
-        public static final int wallet_dim_foreground_disabled_holo_dark=0x7f06000e;
-        public static final int wallet_dim_foreground_holo_dark=0x7f06000f;
-        public static final int wallet_dim_foreground_inverse_disabled_holo_dark=0x7f060010;
-        public static final int wallet_dim_foreground_inverse_holo_dark=0x7f060011;
-        public static final int wallet_highlighted_text_holo_dark=0x7f060012;
-        public static final int wallet_highlighted_text_holo_light=0x7f060013;
-        public static final int wallet_hint_foreground_holo_dark=0x7f060014;
-        public static final int wallet_hint_foreground_holo_light=0x7f060015;
-        public static final int wallet_holo_blue_light=0x7f060016;
-        public static final int wallet_link_text_light=0x7f060017;
-        public static final int wallet_primary_text_holo_light=0x7f06001a;
-        public static final int wallet_secondary_text_holo_dark=0x7f06001b;
+        public static final int common_signin_btn_text_dark=0x7f060019;
+        public static final int common_signin_btn_text_light=0x7f06001a;
+        public static final int rss_line=0x7f06000b;
+        public static final int wallet_bright_foreground_disabled_holo_light=0x7f06000c;
+        public static final int wallet_bright_foreground_holo_dark=0x7f06000d;
+        public static final int wallet_bright_foreground_holo_light=0x7f06000e;
+        public static final int wallet_dim_foreground_disabled_holo_dark=0x7f06000f;
+        public static final int wallet_dim_foreground_holo_dark=0x7f060010;
+        public static final int wallet_dim_foreground_inverse_disabled_holo_dark=0x7f060011;
+        public static final int wallet_dim_foreground_inverse_holo_dark=0x7f060012;
+        public static final int wallet_highlighted_text_holo_dark=0x7f060013;
+        public static final int wallet_highlighted_text_holo_light=0x7f060014;
+        public static final int wallet_hint_foreground_holo_dark=0x7f060015;
+        public static final int wallet_hint_foreground_holo_light=0x7f060016;
+        public static final int wallet_holo_blue_light=0x7f060017;
+        public static final int wallet_link_text_light=0x7f060018;
+        public static final int wallet_primary_text_holo_light=0x7f06001b;
+        public static final int wallet_secondary_text_holo_dark=0x7f06001c;
     }
     public static final class drawable {
         public static final int app_logo=0x7f020000;
@@ -420,7 +421,16 @@ containing a value of this type.
         public static final int ic_plusone_tall_off_client=0x7f020021;
         public static final int powered_by_google_dark=0x7f020022;
         public static final int powered_by_google_light=0x7f020023;
-        public static final int upnews_logo_w2=0x7f020024;
+        public static final int seekbartheme_scrubber_control_disabled_holo=0x7f020024;
+        public static final int seekbartheme_scrubber_control_focused_holo=0x7f020025;
+        public static final int seekbartheme_scrubber_control_normal_holo=0x7f020026;
+        public static final int seekbartheme_scrubber_control_pressed_holo=0x7f020027;
+        public static final int seekbartheme_scrubber_control_selector_holo_dark=0x7f020028;
+        public static final int seekbartheme_scrubber_primary_holo=0x7f020029;
+        public static final int seekbartheme_scrubber_progress_horizontal_holo_dark=0x7f02002a;
+        public static final int seekbartheme_scrubber_secondary_holo=0x7f02002b;
+        public static final int seekbartheme_scrubber_track_holo_dark=0x7f02002c;
+        public static final int upnews_logo_w2=0x7f02002d;
     }
     public static final class id {
         public static final int RelativeLayout1=0x7f070018;
@@ -440,9 +450,7 @@ containing a value of this type.
         public static final int holo_light=0x7f070009;
         public static final int hybrid=0x7f070004;
         public static final int imageView1=0x7f070019;
-        public static final int k2FirstVideoView=0x7f07001e;
-        public static final int k2VideoView=0x7f07001f;
-        public static final int logo=0x7f070020;
+        public static final int logo=0x7f07001f;
         public static final int match_parent=0x7f07000f;
         public static final int monochrome=0x7f070017;
         public static final int none=0x7f070003;
@@ -455,6 +463,7 @@ containing a value of this type.
         public static final int surfaceHolder=0x7f070000;
         public static final int terrain=0x7f070007;
         public static final int textView1=0x7f07001c;
+        public static final int video=0x7f07001e;
         public static final int wrap_content=0x7f070010;
     }
     public static final class integer {
@@ -466,10 +475,12 @@ containing a value of this type.
         public static final int activity_splash=0x7f030002;
         public static final int activity_start=0x7f030003;
         public static final int activity_videofullscreen=0x7f030004;
+        public static final int video_with_logo=0x7f030005;
     }
     public static final class raw {
         public static final int emb=0x7f040000;
         public static final int gtm_analytics=0x7f040001;
+        public static final int rss=0x7f040002;
     }
     public static final class string {
         public static final int accept=0x7f090000;
@@ -508,11 +519,12 @@ containing a value of this type.
         public static final int decline=0x7f090021;
         public static final int dummy_button=0x7f090022;
         public static final int dummy_content=0x7f090023;
-        public static final int ga_trackingId=0x7f090024;
-        public static final int store_picture_message=0x7f090025;
-        public static final int store_picture_title=0x7f090026;
-        public static final int todo=0x7f090027;
-        public static final int wallet_buy_button_place_holder=0x7f090028;
+        public static final int empty_space=0x7f090024;
+        public static final int ga_trackingId=0x7f090025;
+        public static final int store_picture_message=0x7f090026;
+        public static final int store_picture_title=0x7f090027;
+        public static final int todo=0x7f090028;
+        public static final int wallet_buy_button_place_holder=0x7f090029;
     }
     public static final class style {
         /** 
