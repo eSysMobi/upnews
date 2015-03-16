@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\UNL_DOWN_TEMP_FORK\app\libs\guava-jdk5-13.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="381ae6c8add7c98e9bcddb1e0b898400cd6fc3f7">
+        <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\guava-jdk5-13.0-749d3379793c8726675e7593810552e258680007.jar" />
+    </item>
+    <item
+        jar="C:\UNL_DOWN_TEMP_FORK\app\libs\google-http-client-jackson-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="f8983a933c71ffb89452e01e4927cd8bc9becf43">
+        <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\google-http-client-jackson-1.12.0-beta-a980c61627e123a7442b9b9ac2ff10a26db8b3ba.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\libs\google-api-client-android-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="a1f19b7322a3434b9a4a8d3adab3c6e253dc43cf">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\google-api-client-android-1.12.0-beta-28fbc248da9bd3333c86390290dac4e7fce920ef.jar" />
+    </item>
+    <item
+        jar="C:\UNL_DOWN_TEMP_FORK\app\libs\google-http-client-android-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="83dc8aa4c4affd3381008cabc6eba78ce30feebd">
+        <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\google-http-client-android-1.12.0-beta-8ae0092f82571556c58939b40d1423df26bceba9.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.5.87\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-ceba075bba3eb4eacd78b15eb2310854a308e2c9.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\libs\google-api-client-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="03d81483b55e13f72fdcde787cd3a20ec0f7e1eb">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\google-api-client-1.12.0-beta-d5459c53459c354505f0ae5f4f991129faf96571.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\google-api-client-android-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="a1f19b7322a3434b9a4a8d3adab3c6e253dc43cf">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-api-client-android-1.12.0-beta-253c64b62763f182ffbe395ebdc073f5ba0c2cd7.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\google-http-client-jackson2-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="e74bc210968484f04c30b3d1490d9a183112855d">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-http-client-jackson2-1.12.0-beta-b9a00540b37b67821cac0a363e0623e6028d3cde.jar" />
+    </item>
+    <item
+        jar="C:\UNL_DOWN_TEMP_FORK\app\libs\androidannotations-api-3.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="ac33174269a767fcbf3a944cdb3d52e07ef93bee">
+        <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\androidannotations-api-3.1-83e632b5d7a0c195a02d9564355ca22f5d2347aa.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\libs\google-http-client-jackson-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="f8983a933c71ffb89452e01e4927cd8bc9becf43">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\google-http-client-jackson-1.12.0-beta-74a5a301191d158882cc0004e6ddb1aaad97b27f.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\libs\jsr305-1.3.9.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\release\jsr305-1.3.9-15fac24c08407b4533ceb9f0f3caa80f8562967d.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\guava-jdk5-13.0.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="381ae6c8add7c98e9bcddb1e0b898400cd6fc3f7">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\guava-jdk5-13.0-90d99e601d859db8db06a0748f590ec5e9b488cf.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\google-http-client-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4a7581810ad5b2bc76ae135a884a7a8ac5501a25">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-http-client-1.12.0-beta-fb105578290fdad7337e4d7dd91b67c2a39abf67.jar" />
+    </item>
+    <item
+        jar="G:\AndroidSDK\sdk\extras\android\m2repository\com\android\support\support-annotations\22.0.0\support-annotations-22.0.0.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\support-annotations-22.0.0-289b42aecfe514f69517dbdeb1a97485d08228dc.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\libs\google-http-client-android-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="83dc8aa4c4affd3381008cabc6eba78ce30feebd">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\google-http-client-android-1.12.0-beta-8505a5d04844ff1be18d46ae5788761c4f782f54.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\LAST_UNL\sAXRSSReader\unspecified\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="3a2373dee28a557ab2f5feac4a4e3b7d9a67f813">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-8e15a8571cb8dc98c2f533bd2d9c0c275a3afeda.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\libs\google-http-client-gson-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="76b9aec3a810b64404a4fda200f0df9fb297c7a7">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\google-http-client-gson-1.12.0-beta-9f00de789b33711757794464a8414f9fe7b0b851.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\joda-time-2.7.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="5599707a3eaad13e889f691b3af78c8c03842195">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\joda-time-2.7-8c08084c4bb2135b656288a0c1f8dbab725ad61e.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\libs\guava-jdk5-13.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="381ae6c8add7c98e9bcddb1e0b898400cd6fc3f7">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\guava-jdk5-13.0-da478c9237ed730ccd9db42e10cb04ac75891171.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\libs\libGoogleAnalyticsServices.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e887c6c9b31b39a39b0eaba981448b78902ea813">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\libGoogleAnalyticsServices-75514b3a2931ed0f2ab54af3f1cb4994c09ca382.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\google-http-client-jackson-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="f8983a933c71ffb89452e01e4927cd8bc9becf43">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-http-client-jackson-1.12.0-beta-636eea1493617c4b320af3a6aa5feb6fa0a277e8.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\jackson-core-asl-1.9.9.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="0b198f9d20dcc5bd2fe211e10f4110639b8243d6">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\jackson-core-asl-1.9.9-9b8d75e08cae27543b6878f5a4d557395b4c3859.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-fbb5463225b44b5ad0230b04d5d56f67fe3ff891.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\libGoogleAnalyticsServices.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e887c6c9b31b39a39b0eaba981448b78902ea813">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\libGoogleAnalyticsServices-3178dd018836e76a048eea4256b5a40fb8363496.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\libs\internal_impl-22.0.0.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\internal_impl-22.0.0-b1e10b1236e558bcee9dece53ec812e30866911c.jar" />
+    </item>
+    <item
+        jar="C:\UNL_DOWN_TEMP_FORK\app\libs\google-api-client-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="03d81483b55e13f72fdcde787cd3a20ec0f7e1eb">
+        <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\google-api-client-1.12.0-beta-1f52858e5cf50182c294b43f931a8aa244dbb765.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\google-api-client-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="03d81483b55e13f72fdcde787cd3a20ec0f7e1eb">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-api-client-1.12.0-beta-0d2409b6ed9459a32d55209130bd74eeba9a7696.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\google-http-client-android-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="83dc8aa4c4affd3381008cabc6eba78ce30feebd">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-http-client-android-1.12.0-beta-3a05932c7a0390dedde4d95f4ad7ba6c5789e6a4.jar" />
+    </item>
+    <item
+        jar="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.5.87\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
+        <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\classes-0ceda88a6eb16badb351bfc9387e9199981ec553.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\google-api-client-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="03d81483b55e13f72fdcde787cd3a20ec0f7e1eb">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-api-client-1.12.0-beta-0d2409b6ed9459a32d55209130bd74eeba9a7696.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.5.87\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\classes-4d69dba477cc1f42ab247c44c3ebcbf22fd252c9.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\libGoogleAnalyticsServices.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="e887c6c9b31b39a39b0eaba981448b78902ea813">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\libGoogleAnalyticsServices-3178dd018836e76a048eea4256b5a40fb8363496.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-fbb5463225b44b5ad0230b04d5d56f67fe3ff891.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\jackson-core-2.0.5.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3262ffaa644eaa2a42ebbf2eb490bc023645f6f1">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\jackson-core-2.0.5-69a15a06ed6517b18c2581c07f462b242195081f.jar" />
+    </item>
+    <item
+        jar="C:\UNL_DOWN_TEMP_FORK\app\libs\google-oauth-client-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3ce6992d21f067c2fa2e0b7c77567c2fe94aee8e">
+        <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\google-oauth-client-1.12.0-beta-b1d7cd140b2a9b16b1344059464cb9221249f1ac.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\google-oauth-client-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="3ce6992d21f067c2fa2e0b7c77567c2fe94aee8e">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-oauth-client-1.12.0-beta-31a7e69bf3fd3f13c6da5fa5bed6dfaaba95eeb1.jar" />
+    </item>
+    <item
+        jar="C:\UNL_DOWN_TEMP_FORK\app\libs\google-http-client-jackson2-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e74bc210968484f04c30b3d1490d9a183112855d">
+        <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\google-http-client-jackson2-1.12.0-beta-5e61163e0443f4d1769c752de3c4b04b4c038adf.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\guava-jdk5-13.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="381ae6c8add7c98e9bcddb1e0b898400cd6fc3f7">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\guava-jdk5-13.0-90d99e601d859db8db06a0748f590ec5e9b488cf.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\google-api-services-drive-v2-rev43-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="15d026f474a5f8375b78d9296af7c2e050bd0f31">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-api-services-drive-v2-rev43-1.12.0-beta-393ff9971b2e9971540011e66ae7cf8a0b067a2f.jar" />
+    </item>
+    <item
+        jar="G:\Android Studio\gradle\gradle-2.2\caches\modules-2\files-2.1\com.google.code.gson\gson\2.3.1\ecb6e1f8e4b0e84c4b886c2f14a1500caf309757\gson-2.3.1.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="ecb6e1f8e4b0e84c4b886c2f14a1500caf309757">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\gson-2.3.1-62a9771b07aa52b379da633bfcc1712941ae064e.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\classes-0b33e58b68d228776209db337af7a48831b58b8c.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\libs\google-api-services-drive-v2-rev43-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="15d026f474a5f8375b78d9296af7c2e050bd0f31">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\google-api-services-drive-v2-rev43-1.12.0-beta-33a8ad37837a249c84932c4dde4d1e0d0801b24e.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\libs\google-oauth-client-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3ce6992d21f067c2fa2e0b7c77567c2fe94aee8e">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\google-oauth-client-1.12.0-beta-524977297024d260c31bc8281f8c5a1d1d2d3a80.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\google-http-client-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="4a7581810ad5b2bc76ae135a884a7a8ac5501a25">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-http-client-1.12.0-beta-fb105578290fdad7337e4d7dd91b67c2a39abf67.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\google-http-client-gson-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="76b9aec3a810b64404a4fda200f0df9fb297c7a7">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-http-client-gson-1.12.0-beta-aed73867f6f0e521603c10b2aa0bab50bccba4d9.jar" />
+    </item>
+    <item
+        jar="G:\AndroidSDK\sdk\extras\android\m2repository\com\android\support\support-annotations\22.0.0\support-annotations-22.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\support-annotations-22.0.0-289b42aecfe514f69517dbdeb1a97485d08228dc.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\google-api-client-android-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="a1f19b7322a3434b9a4a8d3adab3c6e253dc43cf">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-api-client-android-1.12.0-beta-253c64b62763f182ffbe395ebdc073f5ba0c2cd7.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\joda-time-2.7.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="5599707a3eaad13e889f691b3af78c8c03842195">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\joda-time-2.7-8c08084c4bb2135b656288a0c1f8dbab725ad61e.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.5.87\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-ceba075bba3eb4eacd78b15eb2310854a308e2c9.jar" />
+    </item>
+    <item
+        jar="C:\UNL_DOWN_TEMP_FORK\app\libs\libGoogleAnalyticsServices.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e887c6c9b31b39a39b0eaba981448b78902ea813">
+        <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\libGoogleAnalyticsServices-07e46c2e0a6d2504b50634c8855bc990563cbb5e.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-78e568ec1ed250d92345e3c7824571859ba90403.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\google-http-client-jackson2-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e74bc210968484f04c30b3d1490d9a183112855d">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-http-client-jackson2-1.12.0-beta-b9a00540b37b67821cac0a363e0623e6028d3cde.jar" />
+    </item>
+    <item
+        jar="C:\UNL_DOWN_TEMP_FORK\app\libs\google-http-client-gson-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="76b9aec3a810b64404a4fda200f0df9fb297c7a7">
+        <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\google-http-client-gson-1.12.0-beta-baf94d4475d5f17352c79dacaa5a70d27d450a23.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\jsr305-1.3.9.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\jsr305-1.3.9-547f22936b1d07e47a98ef04a66a6ad11a99ef76.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\google-api-services-drive-v2-rev43-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="15d026f474a5f8375b78d9296af7c2e050bd0f31">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-api-services-drive-v2-rev43-1.12.0-beta-393ff9971b2e9971540011e66ae7cf8a0b067a2f.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\libs\jackson-core-2.0.5.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3262ffaa644eaa2a42ebbf2eb490bc023645f6f1">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\jackson-core-2.0.5-c59a5518f16c68979e0c40b748aea3d06943b132.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\google-oauth-client-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3ce6992d21f067c2fa2e0b7c77567c2fe94aee8e">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-oauth-client-1.12.0-beta-31a7e69bf3fd3f13c6da5fa5bed6dfaaba95eeb1.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\libs\google-http-client-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4a7581810ad5b2bc76ae135a884a7a8ac5501a25">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\google-http-client-1.12.0-beta-b2a911134ae7eba0975e145d3faca33ce0d7a717.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\LAST_UNL\sAXRSSReader\unspecified\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="f3ebafd02df07e106d5bb1fb4615038564f3c9f2">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-8e15a8571cb8dc98c2f533bd2d9c0c275a3afeda.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\libs\internal_impl-22.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\internal_impl-22.0.0-b1e10b1236e558bcee9dece53ec812e30866911c.jar" />
+    </item>
+    <item
+        jar="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\exploded-aar\UNL_DOWN_TEMP_FORK\sAXRSSReader\unspecified\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e2064567c850891f3622232d89dc8f6e17525dcb">
+        <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\classes-521a88f7aefa34c1da9bde089b91ec4cb8d0727b.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\google-http-client-android-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="83dc8aa4c4affd3381008cabc6eba78ce30feebd">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-http-client-android-1.12.0-beta-3a05932c7a0390dedde4d95f4ad7ba6c5789e6a4.jar" />
+    </item>
+    <item
+        jar="C:\UNL_DOWN_TEMP_FORK\app\libs\jackson-core-asl-1.9.9.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0b198f9d20dcc5bd2fe211e10f4110639b8243d6">
+        <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\jackson-core-asl-1.9.9-f529b4e4f0bdb723feeb43ec898ccaa93c3c777d.jar" />
+    </item>
+    <item
+        jar="C:\UNL_DOWN_TEMP_FORK\app\libs\cwac-wakeful-1.0.5.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="72f813b065fb607777e8205514af625680842ffd">
+        <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\cwac-wakeful-1.0.5-c9c875bde72c7f38c9f630438e63014d29fcb72c.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\libs\google-http-client-jackson2-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e74bc210968484f04c30b3d1490d9a183112855d">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\google-http-client-jackson2-1.12.0-beta-12d6399c69ae71cf58bd4e5e9eb80d3087c43031.jar" />
+    </item>
+    <item
+        jar="C:\UNL_DOWN_TEMP_FORK\app\libs\google-http-client-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4a7581810ad5b2bc76ae135a884a7a8ac5501a25">
+        <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\google-http-client-1.12.0-beta-c10e6dc5a7208da4a40d0496cbc9f4208468faab.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\libs\jackson-core-asl-1.9.9.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0b198f9d20dcc5bd2fe211e10f4110639b8243d6">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\jackson-core-asl-1.9.9-1fcd1f5513ae57ff0c7cfd61bfae9dd177bba735.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\jackson-core-2.0.5.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="3262ffaa644eaa2a42ebbf2eb490bc023645f6f1">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\jackson-core-2.0.5-69a15a06ed6517b18c2581c07f462b242195081f.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\google-http-client-jackson-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="f8983a933c71ffb89452e01e4927cd8bc9becf43">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-http-client-jackson-1.12.0-beta-636eea1493617c4b320af3a6aa5feb6fa0a277e8.jar" />
+    </item>
+    <item
+        jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\libs\androidannotations-api-3.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="ac33174269a767fcbf3a944cdb3d52e07ef93bee">
+        <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\androidannotations-api-3.1-1da35d989ef2788e4ba78ea8733d08ee752126ee.jar" />
+    </item>
+    <item
+        jar="C:\UNL_DOWN_TEMP_FORK\app\libs\google-api-client-android-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="a1f19b7322a3434b9a4a8d3adab3c6e253dc43cf">
+        <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\google-api-client-android-1.12.0-beta-d07fde367085420c83dee6f92e3ee251b95f8a0e.jar" />
+    </item>
+    <item
+        jar="C:\UNL_DOWN_TEMP_FORK\app\libs\jackson-core-2.0.5.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3262ffaa644eaa2a42ebbf2eb490bc023645f6f1">
+        <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\jackson-core-2.0.5-8e11e29425807094976dc1ff6f8e32a8c33a3e46.jar" />
+    </item>
+    <item
+        jar="C:\UNL_DOWN_TEMP_FORK\app\libs\jsr305-1.3.9.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf">
+        <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\jsr305-1.3.9-e46ce708a3fd458d5c0dbbee2e9626a6dfab0271.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\google-http-client-gson-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="76b9aec3a810b64404a4fda200f0df9fb297c7a7">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-http-client-gson-1.12.0-beta-aed73867f6f0e521603c10b2aa0bab50bccba4d9.jar" />
+    </item>
+    <item
+        jar="C:\UNL_DOWN_TEMP_FORK\app\libs\google-api-services-drive-v2-rev43-1.12.0-beta.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="15d026f474a5f8375b78d9296af7c2e050bd0f31">
+        <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\google-api-services-drive-v2-rev43-1.12.0-beta-b880f01efe5c214b76648f73adbfb6394c4532a8.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\jsr305-1.3.9.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\jsr305-1.3.9-547f22936b1d07e47a98ef04a66a6ad11a99ef76.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\libs\jackson-core-asl-1.9.9.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0b198f9d20dcc5bd2fe211e10f4110639b8243d6">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\jackson-core-asl-1.9.9-9b8d75e08cae27543b6878f5a4d557395b4c3859.jar" />
+    </item>
+
+</items>
