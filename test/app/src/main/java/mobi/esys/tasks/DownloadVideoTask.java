@@ -32,7 +32,9 @@ import mobi.esys.data.GDFile;
 import mobi.esys.fileworks.DirectoryWorks;
 import mobi.esys.fileworks.FileWorks;
 import mobi.esys.net.NetWork;
-import mobi.esys.upnews_server.UNLServer;
+import mobi.esys.server.UNLServer;
+import mobi.esys.upnewslite.FirstVideoActivity;
+import mobi.esys.upnewslite.FullscreenActivity;
 import mobi.esys.upnewslite.R;
 import mobi.esys.upnewslite.UNLApp;
 
@@ -49,15 +51,16 @@ public class DownloadVideoTask extends AsyncTask<Void, Void, Void> {
     private transient Drive drive;
     private transient UNLApp mApp;
     private transient UNLServer server;
+    private transient String actName;
 
-    public DownloadVideoTask(UNLApp app) {
+    public DownloadVideoTask(UNLApp app, Context context, String actName) {
         downCount = 0;
         mApp = app;
-        context = app.getApplicationContext();
+        this.context = context;
         prefs = app.getApplicationContext().getSharedPreferences(UNLConsts.APP_PREF, Context.MODE_PRIVATE);
         drive = app.getDriveService();
         server = new UNLServer(app);
-
+        this.actName = actName;
     }
 
     @Override
@@ -261,22 +264,41 @@ public class DownloadVideoTask extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void result) {
         super.onPostExecute(result);
         stopDownload();
+
+        if ("first".equals(actName)) {
+            ((FirstVideoActivity) context).recToMP("download_done", "Download ends fine");
+        } else {
+            ((FullscreenActivity) context).recToMP("download_done", "Download ends fine");
+
+        }
+
         if (!isDelete) {
-            DeleteBrokeFilesTask brokeFilesTask = new DeleteBrokeFilesTask(mApp);
+            DeleteBrokeFilesTask brokeFilesTask = new DeleteBrokeFilesTask(mApp, context, actName);
             brokeFilesTask.execute();
         }
+
+
     }
 
     @Override
     protected void onCancelled() {
         super.onCancelled();
         stopDownload();
+
+        if ("first".equals(actName)) {
+            ((FirstVideoActivity) context).recToMP("download_error", "Download canceled");
+        } else {
+            ((FullscreenActivity) context).recToMP("download_error", "Download canceled");
+
+        }
     }
 
     private void stopDownload() {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("isDownload", false);
         editor.apply();
+
+
     }
 
     public static void append(java.io.File file, byte[] bytes) throws Exception {

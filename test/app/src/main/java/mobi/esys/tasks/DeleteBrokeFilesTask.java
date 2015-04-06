@@ -12,7 +12,9 @@ import java.util.Set;
 import mobi.esys.constants.UNLConsts;
 import mobi.esys.fileworks.DirectoryWorks;
 import mobi.esys.net.NetWork;
-import mobi.esys.upnews_server.UNLServer;
+import mobi.esys.server.UNLServer;
+import mobi.esys.upnewslite.FirstVideoActivity;
+import mobi.esys.upnewslite.FullscreenActivity;
 import mobi.esys.upnewslite.UNLApp;
 
 public class DeleteBrokeFilesTask extends AsyncTask<Void, Void, Void> {
@@ -20,11 +22,16 @@ public class DeleteBrokeFilesTask extends AsyncTask<Void, Void, Void> {
     private transient Set<String> md5set;
     private transient SharedPreferences prefs;
     private transient UNLApp mApp;
+    private transient String mActName;
+    private transient Context mContext;
 
-    public DeleteBrokeFilesTask(UNLApp app) {
+
+    public DeleteBrokeFilesTask(UNLApp app, Context context, String actName) {
         prefs = app.getApplicationContext().getSharedPreferences(UNLConsts.APP_PREF, Context.MODE_PRIVATE);
         mApp = app;
         server = new UNLServer(app);
+        mActName = actName;
+        mContext = context;
     }
 
     @Override
@@ -65,4 +72,27 @@ public class DeleteBrokeFilesTask extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+
+        if ("first".equals(mActName)) {
+            ((FirstVideoActivity) mContext).recToMP("video_deleting", "Video delete has been ended");
+        } else {
+            ((FullscreenActivity) mContext).recToMP("video_deleting", "Video delete has been ended");
+
+        }
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+
+        if ("first".equals(mActName)) {
+            ((FirstVideoActivity) mContext).recToMP("video_deleting", "Video delete has been canceled");
+        } else {
+            ((FullscreenActivity) mContext).recToMP("video_deleting", "Video delete has been canceled");
+
+        }
+    }
 }

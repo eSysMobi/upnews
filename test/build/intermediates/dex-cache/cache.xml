@@ -30,13 +30,6 @@
         <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\google-http-client-android-1.12.0-beta-8ae0092f82571556c58939b40d1423df26bceba9.jar" />
     </item>
     <item
-        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.5.87\classes.jar"
-        jumboMode="false"
-        revision="22.0.0"
-        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
-        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-ceba075bba3eb4eacd78b15eb2310854a308e2c9.jar" />
-    </item>
-    <item
         jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\libs\google-api-client-1.12.0-beta.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -51,11 +44,25 @@
         <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-api-client-android-1.12.0-beta-253c64b62763f182ffbe395ebdc073f5ba0c2cd7.jar" />
     </item>
     <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-nearby\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="ef5f051e7308febe289dc93c67c5f32785b4260a">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-4164cae273f01153c37b3601538d37fbe54a74c2.jar" />
+    </item>
+    <item
         jar="C:\LAST_UNL\app\libs\google-http-client-jackson2-1.12.0-beta.jar"
         jumboMode="false"
         revision="22.0.0"
         sha1="e74bc210968484f04c30b3d1490d9a183112855d">
         <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-http-client-jackson2-1.12.0-beta-b9a00540b37b67821cac0a363e0623e6028d3cde.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-panorama\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="1c5a76debf0c2857ccad422c4a80ed785982f8df">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-dab19bec3514f74f1f1a8b30938135890149c887.jar" />
     </item>
     <item
         jar="C:\UNL_DOWN_TEMP_FORK\app\libs\androidannotations-api-3.1.jar"
@@ -107,10 +114,17 @@
         <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\google-http-client-android-1.12.0-beta-8505a5d04844ff1be18d46ae5788761c4f782f54.jar" />
     </item>
     <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-gcm\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="9224bc4c54ba95147c7eabd874573763c07cb6be">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-380fb0acd00f0e1ac9147c42f92ed40418b24f24.jar" />
+    </item>
+    <item
         jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\LAST_UNL\sAXRSSReader\unspecified\classes.jar"
         jumboMode="false"
         revision="22.0.0"
-        sha1="3a2373dee28a557ab2f5feac4a4e3b7d9a67f813">
+        sha1="b66194066dcde4699c3614b426e9472a7ff4920f">
         <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-8e15a8571cb8dc98c2f533bd2d9c0c275a3afeda.jar" />
     </item>
     <item
@@ -126,6 +140,13 @@
         revision="21.1.2"
         sha1="5599707a3eaad13e889f691b3af78c8c03842195">
         <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\joda-time-2.7-8c08084c4bb2135b656288a0c1f8dbab725ad61e.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-safetynet\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="c976518693e89ad44fbfccfc654941eaec198d08">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-1d44b9ed4ec994ea461f484a443b79ee5215116c.jar" />
     </item>
     <item
         jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\libs\guava-jdk5-13.0.jar"
@@ -149,13 +170,6 @@
         <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-http-client-jackson-1.12.0-beta-636eea1493617c4b320af3a6aa5feb6fa0a277e8.jar" />
     </item>
     <item
-        jar="C:\LAST_UNL\app\libs\jackson-core-asl-1.9.9.jar"
-        jumboMode="false"
-        revision="22.0.0"
-        sha1="0b198f9d20dcc5bd2fe211e10f4110639b8243d6">
-        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\jackson-core-asl-1.9.9-9b8d75e08cae27543b6878f5a4d557395b4c3859.jar" />
-    </item>
-    <item
         jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\classes.jar"
         jumboMode="false"
         revision="22.0.0"
@@ -163,11 +177,11 @@
         <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-fbb5463225b44b5ad0230b04d5d56f67fe3ff891.jar" />
     </item>
     <item
-        jar="C:\LAST_UNL\app\libs\libGoogleAnalyticsServices.jar"
+        jar="C:\LAST_UNL\app\libs\jackson-core-asl-1.9.9.jar"
         jumboMode="false"
-        revision="21.1.2"
-        sha1="e887c6c9b31b39a39b0eaba981448b78902ea813">
-        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\libGoogleAnalyticsServices-3178dd018836e76a048eea4256b5a40fb8363496.jar" />
+        revision="22.0.0"
+        sha1="0b198f9d20dcc5bd2fe211e10f4110639b8243d6">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\jackson-core-asl-1.9.9-9b8d75e08cae27543b6878f5a4d557395b4c3859.jar" />
     </item>
     <item
         jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\libs\internal_impl-22.0.0.jar"
@@ -198,6 +212,13 @@
         <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-http-client-android-1.12.0-beta-3a05932c7a0390dedde4d95f4ad7ba6c5789e6a4.jar" />
     </item>
     <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appstate\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="7ff613bf78ab057293892fdbd4169eda899c89b9">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-566dbb9e4c3eb67b02df0d48eb84aa3210f48c84.jar" />
+    </item>
+    <item
         jar="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.5.87\classes.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -219,11 +240,11 @@
         <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\classes-4d69dba477cc1f42ab247c44c3ebcbf22fd252c9.jar" />
     </item>
     <item
-        jar="C:\LAST_UNL\app\libs\libGoogleAnalyticsServices.jar"
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\7.0.0\classes.jar"
         jumboMode="false"
         revision="22.0.0"
-        sha1="e887c6c9b31b39a39b0eaba981448b78902ea813">
-        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\libGoogleAnalyticsServices-3178dd018836e76a048eea4256b5a40fb8363496.jar" />
+        sha1="17f8750d5c0749e44dd7c54aa390d9c937803825">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-7b1bc8864b6748a3608af61a1be380e32d79e511.jar" />
     </item>
     <item
         jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\classes.jar"
@@ -268,6 +289,27 @@
         <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\guava-jdk5-13.0-90d99e601d859db8db06a0748f590ec5e9b488cf.jar" />
     </item>
     <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-analytics\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="29fd6d3794b71491c2789708cd8d03c71feb8954">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-d263d70110d3048cee1fe9b95cb82eaf5b50f2a1.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-games\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="055783146ba9654a725442563be78cad303aad1f">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-b42a83c7c3a095909c3f0f3db7085208472aa958.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appindexing\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="a08d65794b844d8e7540bf9a33859bf3b2482d7f">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-52b919e0410b0b587a995c6aa1b37bcdb6afae72.jar" />
+    </item>
+    <item
         jar="C:\LAST_UNL\app\libs\google-api-services-drive-v2-rev43-1.12.0-beta.jar"
         jumboMode="false"
         revision="22.0.0"
@@ -275,11 +317,25 @@
         <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-api-services-drive-v2-rev43-1.12.0-beta-393ff9971b2e9971540011e66ae7cf8a0b067a2f.jar" />
     </item>
     <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wallet\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="a96b762bde4139de855735f175ec4d17dca55a6d">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-50076c724812785dd02b83eba8e8dd3853909fc4.jar" />
+    </item>
+    <item
         jar="G:\Android Studio\gradle\gradle-2.2\caches\modules-2\files-2.1\com.google.code.gson\gson\2.3.1\ecb6e1f8e4b0e84c4b886c2f14a1500caf309757\gson-2.3.1.jar"
         jumboMode="false"
         revision="22.0.0"
         sha1="ecb6e1f8e4b0e84c4b886c2f14a1500caf309757">
         <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\gson-2.3.1-62a9771b07aa52b379da633bfcc1712941ae064e.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-drive\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="41b3870cbe5fa546d8095b5b89d42cb69f3dd175">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-a5622cc60915bdc711dd71e6036123d27fbe4b42.jar" />
     </item>
     <item
         jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
@@ -303,11 +359,25 @@
         <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\google-oauth-client-1.12.0-beta-524977297024d260c31bc8281f8c5a1d1d2d3a80.jar" />
     </item>
     <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="4c93d99d454c975536bbe3b42283eee847f03ea3">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-b00c419cc2083dbf9f65e42e95845d105af4bbe8.jar" />
+    </item>
+    <item
         jar="C:\LAST_UNL\app\libs\google-http-client-1.12.0-beta.jar"
         jumboMode="false"
         revision="22.0.0"
         sha1="4a7581810ad5b2bc76ae135a884a7a8ac5501a25">
         <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-http-client-1.12.0-beta-fb105578290fdad7337e4d7dd91b67c2a39abf67.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wearable\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="3033cc3a2c68dff3e5b646d6d084bdbdf7d00b25">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-dbbda356acb38e7888bfab58059337fb253a5964.jar" />
     </item>
     <item
         jar="C:\LAST_UNL\app\libs\google-http-client-gson-1.12.0-beta.jar"
@@ -331,18 +401,25 @@
         <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-api-client-android-1.12.0-beta-253c64b62763f182ffbe395ebdc073f5ba0c2cd7.jar" />
     </item>
     <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-location\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="73ccb92b70112f2e463e415ef8d7275de7da6516">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-dcc55d30c843598954e7d5263e5b15ca022631b3.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-identity\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="fb04b12526b0073c7fb1ebb70c5842d82ee95596">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-9b82a02ba7afbd8e7883b910d29149b912b3ae1f.jar" />
+    </item>
+    <item
         jar="C:\LAST_UNL\app\libs\joda-time-2.7.jar"
         jumboMode="false"
         revision="22.0.0"
         sha1="5599707a3eaad13e889f691b3af78c8c03842195">
         <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\joda-time-2.7-8c08084c4bb2135b656288a0c1f8dbab725ad61e.jar" />
-    </item>
-    <item
-        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.5.87\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
-        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-ceba075bba3eb4eacd78b15eb2310854a308e2c9.jar" />
     </item>
     <item
         jar="C:\UNL_DOWN_TEMP_FORK\app\libs\libGoogleAnalyticsServices.jar"
@@ -366,6 +443,13 @@
         <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-http-client-jackson2-1.12.0-beta-b9a00540b37b67821cac0a363e0623e6028d3cde.jar" />
     </item>
     <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-ads\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="e3d791b42eaa90416cd0b2d2e608092794a3baa4">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-a86be807feddd403a2f33dba973a17918940c952.jar" />
+    </item>
+    <item
         jar="C:\UNL_DOWN_TEMP_FORK\app\libs\google-http-client-gson-1.12.0-beta.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -387,6 +471,13 @@
         <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-api-services-drive-v2-rev43-1.12.0-beta-393ff9971b2e9971540011e66ae7cf8a0b067a2f.jar" />
     </item>
     <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.mixpanel.android\mixpanel-android\4.5.3\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="4fab23a76732ffb2cbfb6aeaafc1d2491cb02e80">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-7548b11f7196aa7320dd2eadf8ed338636b02c14.jar" />
+    </item>
+    <item
         jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\libs\jackson-core-2.0.5.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -406,6 +497,13 @@
         revision="21.1.2"
         sha1="4a7581810ad5b2bc76ae135a884a7a8ac5501a25">
         <dex dex="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\build\intermediates\pre-dexed\debug\google-http-client-1.12.0-beta-b2a911134ae7eba0975e145d3faca33ce0d7a717.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-fitness\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="3c0b099f9de16b265ecd6122fcb603e7d0d29f90">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-1cb1a078ac70c094f07994b897b20bd4d3d31348.jar" />
     </item>
     <item
         jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\LAST_UNL\sAXRSSReader\unspecified\classes.jar"
@@ -485,6 +583,13 @@
         <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\google-http-client-jackson-1.12.0-beta-636eea1493617c4b320af3a6aa5feb6fa0a277e8.jar" />
     </item>
     <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-plus\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="0e8228b4bc69c6a2c8d7c18498a77e53417d2574">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-573b8457ac32fb539770956794d6e040d9ca65c9.jar" />
+    </item>
+    <item
         jar="C:\AndroidStudioProjects\FromGitHub\upnews\lite\source\app\libs\androidannotations-api-3.1.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -525,6 +630,13 @@
         revision="21.1.2"
         sha1="15d026f474a5f8375b78d9296af7c2e050bd0f31">
         <dex dex="C:\UNL_DOWN_TEMP_FORK\app\build\intermediates\pre-dexed\debug\google-api-services-drive-v2-rev43-1.12.0-beta-b880f01efe5c214b76648f73adbfb6394c4532a8.jar" />
+    </item>
+    <item
+        jar="C:\LAST_UNL\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-cast\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="4cd0b093824b3228fffc21ea369b98d0b1db6566">
+        <dex dex="C:\LAST_UNL\app\build\intermediates\pre-dexed\debug\classes-5a9afa65b4380f836587ff36917b59aefb1fa7cd.jar" />
     </item>
     <item
         jar="C:\LAST_UNL\app\libs\jsr305-1.3.9.jar"

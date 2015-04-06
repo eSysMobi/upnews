@@ -27,7 +27,7 @@ public class RSS {
             if (rssItems.size() > 0) {
                 for (RssItem rssItem : rssItems) {
                     Log.i(TAG, "rss item: " + rssItem.getTitle());
-                    rssFeed.append(rssItem.getTitle()).append(divider);
+                    rssFeed.append(rssItem.getTitle()).append(" ").append(divider).append(" ");
                 }
             } else {
                 rssFeed.append("");

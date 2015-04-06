@@ -55,10 +55,13 @@ public class RSSFeedTask extends AsyncTask<URL, Void, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         if (s != null && !s.isEmpty()) {
+
             if ("first".equals(mActName)) {
                 ((FirstVideoActivity) mContext).startRSS(s);
+                ((FirstVideoActivity) mContext).recToMP("rss_start", "Start rss feed");
             } else {
                 ((FullscreenActivity) mContext).startRSS(s);
+                ((FullscreenActivity) mContext).recToMP("rss_start", "Start rss feed");
 
             }
         }

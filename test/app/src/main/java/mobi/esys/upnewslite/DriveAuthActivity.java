@@ -19,10 +19,13 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.Calendar;
@@ -44,6 +47,7 @@ public class DriveAuthActivity extends Activity implements View.OnClickListener 
     private transient Drive drive;
     private transient long installDateMillis;
     private transient Date installDate;
+    private transient MixpanelAPI mixpanel;
 
 
     @Override
@@ -52,6 +56,8 @@ public class DriveAuthActivity extends Activity implements View.OnClickListener 
         mApp = (UNLApp) getApplication();
         isFirstAuth = true;
         prefs = mApp.getApplicationContext().getSharedPreferences(UNLConsts.APP_PREF, MODE_PRIVATE);
+
+        mixpanel = MixpanelAPI.getInstance(getApplicationContext(), UNLConsts.MP_TOKEN);
 
         installDateMillis = prefs.getLong("installedTime", 0);
         Calendar today = Calendar.getInstance();
@@ -83,7 +89,7 @@ public class DriveAuthActivity extends Activity implements View.OnClickListener 
 
         if (daysBetween <= 34) {
             if (accName.isEmpty()) {
-                setContentView(R.layout.activity_drive_auth_activity);
+                setContentView(R.layout.drive_auth_activity);
                 gdAuthBtn = (Button) findViewById(R.id.gdAuthBtn);
                 gdAuthBtn.setOnClickListener(this);
             } else {
@@ -150,6 +156,18 @@ public class DriveAuthActivity extends Activity implements View.OnClickListener 
                         Editor editor = prefs.edit();
                         editor.putString("accName", accountName);
                         editor.commit();
+
+                        JSONObject props = new JSONObject();
+                        try {
+                            props.put("gd_account_add", "Google drive account has been added");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        mixpanel.track("event", props);
+                        mixpanel.flush();
+
                         credential.setSelectedAccountName(accountName);
                         drive = getDriveService(credential);
                         mApp.registerGoogle(getDriveService(credential));
@@ -183,6 +201,16 @@ public class DriveAuthActivity extends Activity implements View.OnClickListener 
                         Editor editor = prefs.edit();
                         editor.putString("accName", accountName);
                         editor.commit();
+
+                        JSONObject props = new JSONObject();
+                        try {
+                            props.put("gd_account_add", "Google drive account has been added");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        mixpanel.track("event", props);
+
                         credential.setSelectedAccountName(accountName);
                         drive = getDriveService(credential);
                         mApp.registerGoogle(drive);
@@ -202,12 +230,18 @@ public class DriveAuthActivity extends Activity implements View.OnClickListener 
         finish();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mixpanel.flush();
+    }
+
     public void catchUSERException(Intent intent) {
         startActivityForResult(intent, REQUEST_AUTHORIZATION);
     }
 
     private void createFolderInDriveIfDontExists() {
-        CreateDriveFolderTask createDriveFolderTask = new CreateDriveFolderTask(DriveAuthActivity.this, true, mApp);
+        CreateDriveFolderTask createDriveFolderTask = new CreateDriveFolderTask(DriveAuthActivity.this, true, mApp, true);
         createDriveFolderTask.execute();
     }
 

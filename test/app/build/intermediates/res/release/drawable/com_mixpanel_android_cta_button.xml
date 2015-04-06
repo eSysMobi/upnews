@@ -1,0 +1,6 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
+   <solid android:color="@android:color/transparent" />
+   <stroke android:width="2dp" android:color="#ffffff"/>
+   <corners android:radius="100dp" />
+</shape>
+<!-- From: file:/Users/joe/Desktop/mixpanel-android/src/main/res/drawable/com_mixpanel_android_cta_button.xml --><!-- From: file:/C:/LAST_UNL/app/build/intermediates/exploded-aar/com.mixpanel.android/mixpanel-android/4.5.3/res/drawable/com_mixpanel_android_cta_button.xml -->

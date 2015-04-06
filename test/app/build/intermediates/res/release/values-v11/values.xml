@@ -15,4 +15,14 @@
         <item name="buttonBarStyle">?android:attr/buttonBarStyle</item>
         <item name="buttonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
     </style>
+    <!-- From: file:/C:/LAST_UNL/app/build/intermediates/exploded-aar/com.mixpanel.android/mixpanel-android/4.5.3/res/values-v11/values.xml -->
+    <eat-comment/>
+    <style name="com_mixpanel_android_SurveyActivityTheme" parent="android:Theme.Holo">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowAnimationStyle">@style/com_mixpanel_android_SurveyActivityAnimation</item>
+    </style>
 </resources>

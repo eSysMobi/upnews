@@ -79,7 +79,7 @@ public class Playback {
     }
 
     public void playFolder() {
-        downloadVideoTask = new DownloadVideoTask(mApp);
+        downloadVideoTask = new DownloadVideoTask(mApp, mContext, "full");
         downloadVideoTask.execute();
         DirectoryWorks directoryWorks = new DirectoryWorks(
                 UNLConsts.VIDEO_DIR_NAME);
@@ -100,18 +100,14 @@ public class Playback {
                 public void onCompletion(MediaPlayer mp) {
                     DirectoryWorks directoryWorks = new DirectoryWorks(
                             UNLConsts.VIDEO_DIR_NAME);
-                    if (directoryWorks.getDirFileList("").length == 0) {
-                        mContext.startActivity(new Intent(mContext,
-                                FirstVideoActivity.class));
-                        ((Activity) mContext).finish();
 
-                    } else {
-                        isDownload = mContext.getSharedPreferences(
-                                UNLConsts.APP_PREF, Context.MODE_PRIVATE)
-                                .getBoolean("isDownload", false);
-                        nextTrack(files);
-                        restartDownload();
-                    }
+
+                    isDownload = mContext.getSharedPreferences(
+                            UNLConsts.APP_PREF, Context.MODE_PRIVATE)
+                            .getBoolean("isDownload", false);
+                    nextTrack(files);
+                    restartDownload();
+
                     ((FullscreenActivity) mContext).restartCreepingLine();
                 }
 
@@ -152,7 +148,12 @@ public class Playback {
             });
         } else {
             Log.d(TAG, "file list is empty");
+            mContext.startActivity(new Intent(mContext,
+                    FirstVideoActivity.class));
+            ((Activity) mContext).finish();
         }
+
+        ((FullscreenActivity) mContext).recToMP("playlist_video_play", "Start playing playlist video");
     }
 
     private void nextTrack(final String[] files) {
@@ -244,11 +245,19 @@ public class Playback {
     public void restartDownload() {
         if (!isDownload) {
             downloadVideoTask.cancel(true);
-            downloadVideoTask = new DownloadVideoTask(mApp);
+            downloadVideoTask = new DownloadVideoTask(mApp, mContext, "full");
             downloadVideoTask.execute();
         }
     }
 
+    public void stopDownload() {
+        downloadVideoTask.cancel(true);
+    }
 
+
+    public void restartPlayback() {
+        playFile(files[0]);
+        serverIndex = 0;
+    }
 
 }

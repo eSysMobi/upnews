@@ -26,10 +26,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import mobi.esys.constants.UNLConsts;
+import mobi.esys.fileworks.DirectoryWorks;
 import mobi.esys.net.NetWork;
 import mobi.esys.system.StremsUtils;
 import mobi.esys.upnewslite.DriveAuthActivity;
 import mobi.esys.upnewslite.FirstVideoActivity;
+import mobi.esys.upnewslite.FullscreenActivity;
 import mobi.esys.upnewslite.R;
 import mobi.esys.upnewslite.UNLApp;
 
@@ -43,27 +45,28 @@ public class CreateDriveFolderTask extends AsyncTask<Void, Void, Void> {
     private static final String TAG = "CreateDriveFolderTask";
     private transient Drive drive;
     private transient UNLApp mApp;
-    ProgressDialog pd;
+    private transient ProgressDialog pd;
+    private transient boolean mIsShowPD;
 
-    public CreateDriveFolderTask(Context context,
-
-                                 boolean isStartVideoOnSuccess, UNLApp app) {
+    public CreateDriveFolderTask(Context context, boolean isStartVideoOnSuccess, UNLApp app, boolean isShowPD) {
         mApp = app;
         prefs = app.getApplicationContext().getSharedPreferences(UNLConsts.APP_PREF, Context.MODE_PRIVATE);
         isAuthSuccess = true;
         mStartVideoOnSuccess = isStartVideoOnSuccess;
         drive = app.getDriveService();
-
+        mIsShowPD = mIsShowPD;
         mContext = context;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        pd = new ProgressDialog(mContext);
-        pd.setMessage("Обработка папки на Google Drive");
-        if (!pd.isShowing()) {
-            pd.show();
+        if (mIsShowPD) {
+            pd = new ProgressDialog(mContext);
+            pd.setMessage("Обработка папки на Google Drive");
+            if (!pd.isShowing()) {
+                pd.show();
+            }
         }
     }
 
@@ -190,16 +193,27 @@ public class CreateDriveFolderTask extends AsyncTask<Void, Void, Void> {
         super.onPostExecute(result);
         if (mStartVideoOnSuccess) {
             if (isAuthSuccess) {
-                mContext.startActivity(new Intent(mContext,
-                        FirstVideoActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                DirectoryWorks directoryWorks = new DirectoryWorks(
+                        UNLConsts.VIDEO_DIR_NAME);
+                if (directoryWorks.getDirFileList("if have files").length == 0) {
+                    mContext.startActivity(new Intent(mContext,
+                            FirstVideoActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                    ((DriveAuthActivity) mContext).finish();
+                } else {
+                    mContext.startActivity(new Intent(mContext,
+                            FullscreenActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                    ((DriveAuthActivity) mContext).finish();
+                }
             } else {
                 mContext.startActivity(new Intent(mContext,
-                        DriveAuthActivity.class));
+                        DriveAuthActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         }
 
-        if (pd != null && pd.isShowing()) {
-            pd.dismiss();
+        if (mIsShowPD) {
+            if (pd != null && pd.isShowing()) {
+                pd.dismiss();
+            }
         }
 
     }

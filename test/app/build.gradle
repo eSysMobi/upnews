@@ -4,6 +4,8 @@ android {
     compileSdkVersion 'Google Inc.:Google APIs:22'
     buildToolsVersion "22"
 
+
+
     defaultConfig {
         applicationId "mobi.esys.upnewslite"
         minSdkVersion 11
@@ -16,12 +18,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+
+    dependencies {
+
+        compile 'com.android.support:support-v4:+'
+        compile 'com.google.android.gms:play-services:+'
+        compile 'com.google.code.gson:gson:+'
+        compile project(':sAXRSSReader')
+        compile "com.mixpanel.android:mixpanel-android:4.5.3"
+        compile "com.google.android.gms:play-services:3.1+"
+        compile fileTree(dir: 'libs', include: '*.jar')
+
+    }
 }
 
-dependencies {
-    compile 'com.android.support:support-v4:+'
-    compile 'com.google.android.gms:play-services:+'
-    compile 'com.google.code.gson:gson:+'
-    compile project(':sAXRSSReader')
-    compile fileTree(dir: 'libs', include: '*.jar')
-}
+

@@ -15,12 +15,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.MapBuilder;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import mobi.esys.constants.UNLConsts;
 import mobi.esys.fileworks.DirectoryWorks;
 import mobi.esys.playback.Playback;
+import mobi.esys.tasks.CreateDriveFolderTask;
 import mobi.esys.tasks.DownloadVideoTask;
 import mobi.esys.tasks.RSSTask;
 
@@ -34,6 +37,7 @@ public class FullscreenActivity extends Activity {
     private transient Handler handler;
     private transient Runnable runnable;
     private transient UNLApp mApp;
+    private transient MixpanelAPI mixpanel;
 
 
     @Override
@@ -59,17 +63,17 @@ public class FullscreenActivity extends Activity {
 
         handler.postDelayed(runnable, UNLConsts.RSS_TASK_START_DELAY);
 
-
-        EasyTracker.getInstance(this).send(
-                MapBuilder.createEvent("ui_action", "activity_launch",
-                        "fullscreen_acivity", null).build());
+        mixpanel = MixpanelAPI.getInstance(getApplicationContext(), UNLConsts.MP_TOKEN);
 
 
         videoView = (VideoView) findViewById(R.id.video);
 
+        CreateDriveFolderTask createDriveFolderTask = new CreateDriveFolderTask(FullscreenActivity.this, false, mApp, false);
+        createDriveFolderTask.execute();
+
         startPlayback();
         DownloadVideoTask downloadVideoTask = new DownloadVideoTask(
-                mApp);
+                mApp, FullscreenActivity.this, "full");
         downloadVideoTask.execute();
 
 
@@ -85,6 +89,7 @@ public class FullscreenActivity extends Activity {
 
     @Override
     protected void onDestroy() {
+
         super.onDestroy();
         if (handler != null && runnable != null) {
             handler.removeCallbacks(runnable);
@@ -133,7 +138,7 @@ public class FullscreenActivity extends Activity {
                 UNLConsts.VIDEO_DIR_NAME);
         if (directoryWorks.getDirFileList("fullscreen").length == 0) {
             startActivity(new Intent(FullscreenActivity.this,
-                    FirstVideoActivity.class));
+                    FirstVideoActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
             finish();
         } else {
             startPlayback();
@@ -151,7 +156,6 @@ public class FullscreenActivity extends Activity {
 
     @Override
     protected void onStart() {
-        EasyTracker.getInstance(this).activityStart(this);
         super.onStart();
     }
 
@@ -195,6 +199,18 @@ public class FullscreenActivity extends Activity {
 
     public void restartCreepingLine() {
         textView.requestFocus();
+    }
+
+
+    public void recToMP(String tag, String message) {
+        JSONObject props = new JSONObject();
+        try {
+            props.put(tag, message);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mixpanel.track("event", props);
+        mixpanel.flush();
     }
 
 }

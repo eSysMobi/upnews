@@ -15,7 +15,7 @@ import mobi.esys.constants.UNLConsts;
 import mobi.esys.data.GDFile;
 import mobi.esys.net.NetWork;
 import mobi.esys.system.StremsUtils;
-import mobi.esys.upnews_server.UNLServer;
+import mobi.esys.server.UNLServer;
 import mobi.esys.upnewslite.UNLApp;
 
 /**
