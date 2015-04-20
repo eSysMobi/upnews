@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/instHashTagEdit"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerVertical="true"
+        android:digits="0,1,2,3,4,5,6,7,8,9,_,*,qwertzuiopasdfghjklyxcvbnm,QWERTZUIOPASDFGHJKLYXCVBNM"
+        android:ellipsize="end"
+        android:focusableInTouchMode="true"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:lines="1"
+        android:textColor="@android:color/black"
+        android:maxLength="20"
+        android:maxLines="1"
+        android:scrollHorizontally="false"
+        android:singleLine="true"
+        android:text="#" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:src="@drawable/instagram_logo"
+        android:layout_above="@+id/textView"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OK"
+        android:id="@+id/enterHashTagBtn"
+        android:layout_below="@+id/instHashTagEdit"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Введите тэг для поиска изображений в Instagram"
+        android:id="@+id/textView"
+        android:textColor="@android:color/black"
+        android:layout_above="@+id/instHashTagEdit"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>

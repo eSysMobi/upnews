@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="mobi.esys.upnewshashtag">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+
+    <application
+        android:name=".UNHApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen">
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".SliderActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".TwitterLoginActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".InstaLoginActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".DriveLoginActivity"
+            android:exported="false"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="com.google.android.apps.drive.APP_ID"
+                android:value="id=683764382729" />
+        </activity>
+
+        <activity
+            android:name=".MainSliderActivity"
+            android:exported="false"
+            android:launchMode="singleTop" />
+
+        <activity
+            android:name=".InstagramHashTagActivity"
+            android:exported="false"
+            android:launchMode="singleTop" />
+
+        <activity
+            android:name=".TweeterHashTagActivity"
+            android:exported="false"
+            android:launchMode="singleTop" />
+
+
+        <receiver
+            android:name="mobi.esys.recievers.BootUpReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="c4b844cc94ec6cbfcc07c4a337ad37857a6fb89d" />
+
+
+    </application>
+
+</manifest>
