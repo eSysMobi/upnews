@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="mobi.esys.upnewshashtag">
+    package="mobi.esys.upnewshashtag"
+    android:installLocation="internalOnly">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 
     <application
@@ -25,18 +25,15 @@
 
         <activity
             android:name=".SliderActivity"
-            android:exported="false"
             android:launchMode="singleTop"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".TwitterLoginActivity"
-            android:exported="false"
             android:launchMode="singleTop"
             android:screenOrientation="landscape" />
         <activity
             android:name=".InstaLoginActivity"
-            android:exported="false"
             android:launchMode="singleTop"
             android:screenOrientation="landscape">
             <intent-filter>
@@ -47,7 +44,6 @@
         </activity>
         <activity
             android:name=".DriveLoginActivity"
-            android:exported="false"
             android:launchMode="singleTop">
             <meta-data
                 android:name="com.google.android.apps.drive.APP_ID"
@@ -56,17 +52,14 @@
 
         <activity
             android:name=".MainSliderActivity"
-            android:exported="false"
             android:launchMode="singleTop" />
 
         <activity
             android:name=".InstagramHashTagActivity"
-            android:exported="false"
             android:launchMode="singleTop" />
 
         <activity
             android:name=".TweeterHashTagActivity"
-            android:exported="false"
             android:launchMode="singleTop" />
 
 
