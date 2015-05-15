@@ -47,5 +47,14 @@
         android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Skip"
+        android:id="@+id/skipBtn"
+        android:layout_below="@+id/twitterAuthBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="44dp" />
+
 </RelativeLayout>
 

@@ -14,6 +14,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
+
 import mobi.esys.consts.ISConsts;
 
 /**
@@ -23,25 +26,29 @@ public class TweeterHashTagActivity extends Activity implements View.OnClickList
     private transient EditText hashTagEdit;
     private transient Button enterHashBtn;
     private transient SharedPreferences preferences;
+    private transient EasyTracker easyTracker;
+
+    private static final int MIN_EDITABLE_LENGTH = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_twitter_hashtag);
 
+        easyTracker = EasyTracker.getInstance(TweeterHashTagActivity.this);
+
         hashTagEdit = (EditText) findViewById(R.id.twHashTagEdit);
         enterHashBtn = (Button) findViewById(R.id.enterHashTagBtn);
 
         enterHashBtn.setOnClickListener(TweeterHashTagActivity.this);
 
-        preferences = getSharedPreferences(ISConsts.PREF_PREFIX, MODE_PRIVATE);
-        String hashTag = preferences.getString("twHashTag", "");
-        if (!"".equals(hashTag)) {
+        preferences = getSharedPreferences(ISConsts.globals.pref_prefix, MODE_PRIVATE);
+        String hashTag = preferences.getString(ISConsts.prefstags.twitter_hashtag, "");
+        if (!hashTag.isEmpty()) {
             hashTagEdit.setText(hashTag);
         }
 
-
-        if (hashTagEdit.getEditableText().length() > 2) {
+        if (hashTagEdit.getEditableText().length() > MIN_EDITABLE_LENGTH) {
             hashTagEdit.setSelection(hashTagEdit.getEditableText().length() - 1);
         } else {
             hashTagEdit.setSelection(1);
@@ -82,19 +89,17 @@ public class TweeterHashTagActivity extends Activity implements View.OnClickList
             @Override
             public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
                 boolean handled = false;
-
-                // Some phones disregard the IME setting option in the xml, instead
-                // they send IME_ACTION_UNSPECIFIED so we need to catch that
                 if (EditorInfo.IME_ACTION_DONE == actionId || EditorInfo.IME_ACTION_UNSPECIFIED == actionId) {
-                    if (!"".equals(hashTagEdit.getEditableText().toString())
-                            && hashTagEdit.getEditableText().toString().length() >= 2) {
-                        startActivity(new Intent(TweeterHashTagActivity.this, DriveLoginActivity.class));
+                    if (!hashTagEdit.getEditableText().toString().isEmpty()
+                            && hashTagEdit.getEditableText().toString().length() >= MIN_EDITABLE_LENGTH) {
+                        startActivity(new Intent(TweeterHashTagActivity.this, SliderActivity.class));
                         SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString("twHashTag", hashTagEdit.getEditableText().toString());
+                        editor.putString(ISConsts.prefstags.twitter_hashtag, hashTagEdit.getEditableText().toString());
                         editor.commit();
+                        easyTracker.send(MapBuilder.createEvent("input_hashtag",
+                                "twitter_input_hashtag", hashTagEdit.getEditableText().toString(), null).build());
                     } else {
-
-                        Toast.makeText(TweeterHashTagActivity.this, "Введите тэг для поиска сообщений в Twitter", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TweeterHashTagActivity.this, getString(R.string.twitter_hashtag_required_message), Toast.LENGTH_SHORT).show();
                     }
                     handled = true;
                 }
@@ -107,15 +112,14 @@ public class TweeterHashTagActivity extends Activity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        if (!"".equals(hashTagEdit.getEditableText().toString())
-                && hashTagEdit.getEditableText().toString().length() >= 2) {
-            startActivity(new Intent(TweeterHashTagActivity.this, DriveLoginActivity.class));
+        if (!hashTagEdit.getEditableText().toString().isEmpty()
+                && hashTagEdit.getEditableText().toString().length() >= MIN_EDITABLE_LENGTH) {
+            startActivity(new Intent(TweeterHashTagActivity.this, SliderActivity.class));
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("twHashTag", hashTagEdit.getEditableText().toString());
+            editor.putString(ISConsts.prefstags.twitter_hashtag, hashTagEdit.getEditableText().toString());
             editor.commit();
         } else {
-
-            Toast.makeText(TweeterHashTagActivity.this, "Введите тэг для поиска сообщений в Twitter", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TweeterHashTagActivity.this, getString(R.string.twitter_hashtag_required_message), Toast.LENGTH_SHORT).show();
         }
     }
 }

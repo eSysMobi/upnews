@@ -1,31 +1,25 @@
 package mobi.esys.upnewshashtag;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
-import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.TextUtils;
+import android.os.Handler;
+import android.os.PersistableBundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.models.Search;
-import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.core.services.SearchService;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
 
 import net.londatiga.android.instagram.Instagram;
 
@@ -34,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -41,33 +36,54 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
+import de.greenrobot.event.EventBus;
+import io.fabric.sdk.android.Fabric;
 import mobi.esys.consts.ISConsts;
+import mobi.esys.downloaders.InstagramPhotoDownloader;
+import mobi.esys.eventbus.SongStopEvent;
+import mobi.esys.filesystem.directories.DirectoryHelper;
 import mobi.esys.instagram.model.InstagramPhoto;
 import mobi.esys.tasks.GetTagPhotoIGTask;
+import mobi.esys.twitter.model.TwitterHelper;
 
 
 public class SliderActivity extends Activity {
     private transient SliderLayout mSlider;
     private static final SliderLayout.Transformer[] ANIMATIONS = SliderLayout.Transformer.values();
-    private static final int ANIM_DURATION = 3000;
     private transient MediaPlayer mediaPlayer;
     private transient TextView textView;
     private transient RelativeLayout relativeLayout;
     private transient UNHApp mApp;
-    private transient JSONObject igObject;
 
-    private static final String THUMBNAIL = "standard_resolution";
-    private static final String URL = "url";
-
-    private transient List<InstagramPhoto> igPhotos;
-    private transient List<InstagramPhoto> morePhotos;
-
-    private transient Instagram instagram;
 
     private transient SharedPreferences preferences;
 
-    private static final int[] RAW_IDS = {R.raw.bgmusic, R.raw.lew};
+    private transient List<Integer> rawIds;
+    private transient List<Integer> imageIds;
+    private transient List<Integer> soundIds;
     private transient int musicIndex = 0;
+    private transient int musicPosition = 0;
+
+    private static final String URL = "url";
+
+    private transient JSONObject igObject;
+
+    private transient Instagram instagram;
+
+    private transient String igHashTag;
+    private transient String twHashTag;
+
+    private transient boolean isTwAllow;
+
+
+    private transient final String TAG = this.getClass().getSimpleName();
+
+
+    private transient Handler twitterFeedHandler;
+    private transient Runnable twitterFeedRunnable;
+
+    private transient List<InstagramPhoto> igPhotos;
+
 
     @Override
 
@@ -76,232 +92,331 @@ public class SliderActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         super.onCreate(savedInstanceState);
+        preferences = getSharedPreferences(ISConsts.globals.pref_prefix, MODE_PRIVATE);
+
+        DirectoryHelper directoryHelper = new DirectoryHelper(ISConsts.globals.dir_name.concat(ISConsts.globals.photo_dir_name));
+        if (directoryHelper.getDirFileList(TAG).length > 0) {
+            startActivity(new Intent(SliderActivity.this, MainSliderActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+            finish();
+        } else {
+            init();
+        }
+
+    }
+
+    public void init() {
         setContentView(R.layout.activity_slider);
+        EventBus.getDefault().register(this);
 
         mApp = (UNHApp) getApplicationContext();
 
-        preferences = getSharedPreferences(ISConsts.PREF_PREFIX, MODE_PRIVATE);
-
 
         instagram = new Instagram(SliderActivity.this,
-                ISConsts.INSTAGRAM_CLIENT_ID, ISConsts.INSTAGRAM_CLIENT_SECRET,
-                ISConsts.INSTAGRAM_REDIRECT_URI);
+                ISConsts.instagramconsts.instagram_client_id, ISConsts.instagramconsts.instagram_client_secret,
+                ISConsts.instagramconsts.instagram_redirect_uri);
 
 
-        igPhotos = new ArrayList<>();
-        morePhotos = new ArrayList<>();
+        rawIds = new ArrayList<>();
+        rawIds.addAll(getAllResourceIDs(R.raw.class));
+
+        imageIds = new ArrayList<>();
+        soundIds = new ArrayList<>();
+
+        for (int i = 0; i < rawIds.size(); i++) {
+            String resName = getResources().getResourceName(rawIds.get(i));
+            Log.d("raw id's", resName);
+            if (resName.contains("img")) {
+                imageIds.add(rawIds.get(i));
+            } else if (resName.contains("snd")) {
+                soundIds.add(rawIds.get(i));
+            }
+        }
+
 
         textView = new TextView(SliderActivity.this);
         relativeLayout = (RelativeLayout) findViewById(R.id.embeded_slider_layout);
 
         mSlider = (SliderLayout) findViewById(R.id.slider);
+        mSlider.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Invisible);
 
-        String igHashTag = preferences.getString("igHashTag", "#news");
-        Toast.makeText(SliderActivity.this, igHashTag, Toast.LENGTH_SHORT).show();
-        updateIGPhotos(igHashTag, false);
+        igHashTag = preferences.getString(ISConsts.prefstags.instagram_hashtag, ISConsts.globals.default_hashtag);
+        twHashTag = preferences.getString(ISConsts.prefstags.twitter_hashtag, ISConsts.globals.default_hashtag);
+        isTwAllow = preferences.getBoolean(ISConsts.prefstags.twitter_allow, false);
 
-        playMP3();
-        mSlider.startAutoCycle();
 
-        Timer myTimer = new Timer(); // Создаем таймер
-        myTimer.schedule(new TimerTask() { // Определяем задачу
+        loadSlide();
+
+
+        igPhotos = new ArrayList<>();
+
+        Timer myTimer = new Timer();
+        myTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 changeAnimation();
             }
+        }, 0L, ISConsts.times.anim_duration - 5);
 
 
+        playMP3();
+
+        if (isTwAllow) {
+            TwitterAuthConfig authConfig = new TwitterAuthConfig(ISConsts.twitterconsts.twitter_key, ISConsts.twitterconsts.twitter_secret);
+            Fabric.with(SliderActivity.this, new Twitter(authConfig));
+            twitterFeedHandler = new Handler();
+            twitterFeedRunnable = new Runnable() {
+                @Override
+                public void run() {
+
+                    TwitterHelper.startLoadTweets(Twitter.getInstance().getApiClient(), twHashTag, relativeLayout, SliderActivity.this);
+                }
+            };
+
+            twitterFeedHandler.postDelayed(twitterFeedRunnable, ISConsts.times.twitter_get_feed_delay);
         }
 
-                , 0L, 2995);
-
-        loadTweets();
-
+        updateIGPhotos(igHashTag);
 
     }
+
 
     private void changeAnimation() {
+
         Random r = new Random();
         mSlider.setPresetTransformer(SliderLayout.Transformer.valueOf(ANIMATIONS[r.nextInt(ANIMATIONS.length)].name()));
-    }
-
-
-    public void restartCreepingLine() {
-    }
-
-    public void recToMP(String playlist_video_play, String s) {
 
     }
 
-    public void startRSS(String feed) {
-
-
-        Log.d("feed", feed);
-
-        textView.setBackgroundColor(getResources().getColor(R.color.rss_line));
-        textView.setTextColor(Color.WHITE);
-        RelativeLayout.LayoutParams tslp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 80);
-        tslp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        tslp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        tslp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        textView.setGravity(Gravity.CENTER_VERTICAL);
-        textView.setLayoutParams(tslp);
-        textView.setTextSize(30);
-        textView.setPadding(20, 0, 20, 0);
-        textView.setSingleLine(true);
-        textView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-        textView.setMarqueeRepeatLimit(-1);
-        textView.setHorizontallyScrolling(true);
-        textView.setFocusable(true);
-        textView.setFocusableInTouchMode(true);
-        textView.setFreezesText(true);
-        textView.requestFocus();
-
-
-        textView.setText(Html.fromHtml(feed), TextView.BufferType.SPANNABLE);
-        relativeLayout.addView(textView);
-
-
-    }
 
     private void playMP3() {
-        mediaPlayer = MediaPlayer.create(SliderActivity.this, RAW_IDS[musicIndex]);
+        mediaPlayer = MediaPlayer.create(SliderActivity.this, soundIds.get(musicIndex));
         mediaPlayer.start();
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                musicIndex++;
-                if (musicIndex == RAW_IDS.length) {
-                    AssetFileDescriptor afd = getResources().openRawResourceFd(RAW_IDS[musicIndex]);
-                    if (afd == null) {
-                        return;
-                    }
-                    try {
-                        mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                        afd.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                                                @Override
+                                                public void onCompletion(MediaPlayer mp) {
 
-                } else {
-                    AssetFileDescriptor afd = getResources().openRawResourceFd(RAW_IDS[musicIndex]);
-                    if (afd == null) {
-                        return;
-                    }
-                    try {
-                        mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                        afd.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+
+                                                    DirectoryHelper photoDirHelper = new DirectoryHelper(ISConsts.globals.dir_name.concat(ISConsts.globals.photo_dir_name));
+                                                    String[] photoFileList = photoDirHelper.getDirFileList(TAG);
+
+                                                    if (photoFileList.length == 0) {
+                                                        playEmbedded();
+                                                        EventBus.getDefault().post(new SongStopEvent());
+                                                        // restartPhotoDownload();
+                                                        //restartMusicDownload();
+                                                    } else {
+                                                        if (photoFileList.length > 0 && !preferences.getBoolean("isDel", false)) {
+                                                            //stopMusicDownload();
+                                                            startActivity(new Intent(SliderActivity.this, MainSliderActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                                                            finish();
+
+                                                        } else {
+                                                            playEmbedded();
+                                                            EventBus.getDefault().post(new SongStopEvent());
+                                                            //restartPhotoDownload();
+                                                            //restartMusicDownload();
+                                                        }
+                                                    }
+                                                }
+
+
+                                            }
+
+        );
+
+        textView.setSelected(true);
+        textView.invalidate();
     }
 
-    public void loadTweets() {
-        final SearchService service = Twitter.getInstance().getApiClient().getSearchService();
-        String twHashTag = preferences.getString("twHashTag", "#news");
 
-        service.tweets(twHashTag, null, null, null, null, null, null, null, null, null, new Callback<Search>() {
-            @Override
-            public void success(Result<Search> searchResult) {
-                StringBuilder builder = new StringBuilder();
-                List<Tweet> tweets = searchResult.data.tweets;
-                for (int i = 0; i < tweets.size(); i++) {
-                    builder.append("<font color='blue'>@</font>").append("<font color='blue'>").append(tweets.get(i).user.name).append("</font>").append(":").append(tweets.get(i).text);
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        stopTwitterFeedRefresh();
+        finish();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mSlider.stopAutoCycle();
+        if (mediaPlayer != null) {
+            mediaPlayer.pause();
+            musicPosition = mediaPlayer.getCurrentPosition();
+        }
+        stopTwitterFeedRefresh();
+    }
 
-                }
-
-                startRSS(builder.toString());
-            }
-
-            @Override
-            public void failure(TwitterException e) {
-
-            }
-        });
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSlider.startAutoCycle();
+        if (mediaPlayer != null) {
+            mediaPlayer.seekTo(musicPosition);
+            mediaPlayer.start();
+        }
+        restartTwiiterFeed();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mediaPlayer.stop();
-        mediaPlayer.release();
+        mSlider.removeAllSliders();
+        if (mediaPlayer != null) {
+            mediaPlayer.pause();
+            musicPosition = mediaPlayer.getCurrentPosition();
+        }
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mediaPlayer.stop();
-        mediaPlayer.release();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
+        EventBus.getDefault().unregister(this);
+        stopTwitterFeedRefresh();
     }
 
-    private void updateIGPhotos(final String tag, final boolean isShowProgress) {
-        final GetTagPhotoIGTask getTagPhotoIGTask = new GetTagPhotoIGTask(
-                SliderActivity.this,
-                "default", tag, isShowProgress, mApp);
-        getTagPhotoIGTask.execute(instagram.getSession().getAccessToken());
 
-        Log.d("aT", instagram.getSession().getAccessToken());
-        try {
-            igObject = new JSONObject(getTagPhotoIGTask.get());
-            getIGPhotos("get");
-
-        } catch (JSONException e) {
-        } catch (InterruptedException e) {
-        } catch (ExecutionException e) {
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        if (mediaPlayer != null) {
+            mediaPlayer.pause();
+            musicPosition = mediaPlayer.getCurrentPosition();
         }
     }
 
-    private void getIGPhotos(final String mode) {
+
+    private List<Integer> getAllResourceIDs(Class<?> aClass) throws IllegalArgumentException {
+        Field[] IDFields = aClass.getFields();
+
+        List<Integer> ids = new ArrayList<>();
+
         try {
-            final JSONArray igData = igObject.getJSONArray("data");
-
-            if ("get".equals(mode)) {
-                for (int i = 0; i < igData.length(); i++) {
-
-                    final JSONObject currObj = igData.getJSONObject(i)
-                            .getJSONObject("images");
-                    final String origURL = currObj.getJSONObject(THUMBNAIL)
-                            .getString(URL).replace("s.jpg", "n.jpg");
-                    igPhotos.add(new InstagramPhoto(igData.getJSONObject(i)
-                            .getString("id"), currObj.getJSONObject(THUMBNAIL)
-                            .getString(URL), origURL));
-                }
-            } else if ("more".equals(mode)) {
-                Log.d("mode", mode);
-                Log.d("data", igData.toString());
-                morePhotos.clear();
-                for (int i = 0; i < igData.length(); i++) {
-
-                    final JSONObject currObj = igData.getJSONObject(i)
-                            .getJSONObject("images");
-                    String origURL = currObj.getJSONObject(THUMBNAIL)
-                            .getString(URL).replace("s.jpg", "n.jpg");
-                    morePhotos.add(new InstagramPhoto(igData.getJSONObject(i)
-                            .getString("id"), currObj.getJSONObject(THUMBNAIL)
-                            .getString(URL), origURL));
-                }
+            for (int i = 0; i < IDFields.length; i++) {
+                ids.add(IDFields[i].getInt(null));
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
+            throw new IllegalArgumentException();
         }
+        return ids;
+    }
 
-//        DownloadInstagramPhotoTask photoTask = new DownloadInstagramPhotoTask(SliderActivity.this);
-//        photoTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, igPhotos);
-
-
-        for (int i = 0; i < igPhotos.size(); i++) {
+    private void loadSlide() {
+        mSlider.stopAutoCycle();
+        for (int i = 0; i < imageIds.size(); i++) {
             DefaultSliderView textSliderView = new DefaultSliderView(this);
             textSliderView
-                    .image(igPhotos.get(i).getIgThumbURL()).setScaleType(BaseSliderView.ScaleType.FitCenterCrop);
+                    .image(imageIds.get(i)).setScaleType(DefaultSliderView.ScaleType.Fit);
 
             mSlider.addSlider(textSliderView);
         }
 
         Random r = new Random();
         mSlider.setPresetTransformer(SliderLayout.Transformer.valueOf(ANIMATIONS[r.nextInt(ANIMATIONS.length)].name()));
-        mSlider.setDuration(ANIM_DURATION);
+        mSlider.setDuration(ISConsts.times.anim_duration);
+
+        mSlider.startAutoCycle();
+    }
+
+    private void updateIGPhotos(final String tag) {
+        final GetTagPhotoIGTask getTagPhotoIGTask = new GetTagPhotoIGTask(
+                SliderActivity.this,
+                "default", tag, false, mApp);
+        getTagPhotoIGTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, instagram.getSession().getAccessToken());
+
+        Log.d("aT", instagram.getSession().getAccessToken());
+        try {
+            igObject = new JSONObject(getTagPhotoIGTask.get());
+            getIGPhotos();
+        } catch (JSONException e) {
+        } catch (InterruptedException e) {
+        } catch (ExecutionException e) {
+        }
+    }
+
+    private void getIGPhotos() {
+        igPhotos = new ArrayList<>();
+        try {
+            final JSONArray igData = igObject.getJSONArray("data");
+            for (int i = 0; i < igData.length(); i++) {
+
+                final JSONObject currObj = igData.getJSONObject(i)
+                        .getJSONObject("images");
+                Log.d("images main", currObj.toString());
+                final String origURL = currObj.getJSONObject(ISConsts.instagramconsts.instagram_image_type)
+                        .getString(URL);
+                Log.d("images url main", origURL);
+                igPhotos.add(new InstagramPhoto(igData.getJSONObject(i)
+                        .getString("id"), currObj.getJSONObject(ISConsts.instagramconsts.instagram_image_type)
+                        .getString(URL), origURL));
+                Log.d("ig photos main", igPhotos.toString());
+
+            }
+
+
+        } catch (JSONException e) {
+        }
+
+        InstagramPhotoDownloader instagramPhotoDownloader = new InstagramPhotoDownloader(SliderActivity.this, false);
+        instagramPhotoDownloader.download(igPhotos);
+
+    }
+
+    public void playEmbedded() {
+        musicIndex++;
+        if (musicIndex == soundIds.size()) {
+            musicIndex = 0;
+
+            AssetFileDescriptor afd = getResources().openRawResourceFd(soundIds.get(musicIndex));
+            if (afd == null) {
+                return;
+            }
+            try {
+                mediaPlayer.reset();
+                mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+                afd.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            AssetFileDescriptor afd = getResources().openRawResourceFd(soundIds.get(musicIndex));
+            if (afd == null) {
+                return;
+            }
+            try {
+                mediaPlayer.reset();
+                mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+                afd.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public void stopTwitterFeedRefresh() {
+        if (twitterFeedHandler != null && twitterFeedRunnable != null) {
+            twitterFeedHandler.removeCallbacks(twitterFeedRunnable);
+        }
+    }
+
+    public void restartTwiiterFeed() {
+        if (twitterFeedHandler != null && twitterFeedRunnable != null) {
+            twitterFeedHandler.postDelayed(twitterFeedRunnable, ISConsts.times.twitter_get_feed_delay);
+        }
+    }
+
+    public void onEvent(SongStopEvent songStop) {
+        updateIGPhotos(igHashTag);
     }
 }

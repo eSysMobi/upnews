@@ -6,16 +6,15 @@
         <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleHome" value="G:\Android Studio\gradle\gradle-2.2.1" />
+        <option name="gradleJvm" value="1.8" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/instagram" />
-            <option value="$PROJECT_DIR$/sAXRSSReader" />
           </set>
         </option>
       </GradleProjectSettings>
     </option>
   </component>
 </project>
-

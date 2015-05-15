@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.Toast;
 
 import net.londatiga.android.instagram.InstagramRequest;
 
@@ -26,20 +25,19 @@ import mobi.esys.upnewshashtag.UNHApp;
 
 public class GetTagPhotoIGTask extends AsyncTask<String, Void, String> {
     private static final String TAG_ID = "tagID";
-    private final transient Context context;
+    private final transient Context mContext;
     private final transient String mode;
-    private transient String aT;
     private final transient String tag;
     private final transient SharedPreferences prefs;
     private final transient ProgressDialog dialog;
     private final transient boolean isShowProgress;
-    private transient boolean isFine;
     private transient UNHApp mApp;
+    private transient final String TAG = this.getClass().getSimpleName();
 
     public GetTagPhotoIGTask(final Context context,
                              final String mode, final String tag, final boolean isShowProgress, final UNHApp app) {
         super();
-        this.context = context;
+        this.mContext = context;
         this.mode = mode;
         this.tag = tag;
         this.prefs = context.getSharedPreferences("IPPrefs",
@@ -68,14 +66,12 @@ public class GetTagPhotoIGTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(final String... params) {
         String response = "";
         if (tag.length() >= 2) {
-            this.aT = params[0];
             final InstagramRequest request = new InstagramRequest(params[0]);
 
             String edTag = tag.substring(1).toLowerCase(Locale.ENGLISH);
 
             if (NetMonitor.isNetworkAvailable(mApp)) {
                 try {
-
                     if ("more".equals(mode)) {
 
                         Log.d("get ig photos mode: ", mode);
@@ -83,7 +79,7 @@ public class GetTagPhotoIGTask extends AsyncTask<String, Void, String> {
                         final List<NameValuePair> moreParams = new ArrayList<NameValuePair>(
                                 2);
                         moreParams.add(new BasicNameValuePair("count", String
-                                .valueOf(ISConsts.INSTAGRAM_PAGE_COUNT)));
+                                .valueOf(ISConsts.instagramconsts.instagram_page_count)));
                         moreParams.add(new BasicNameValuePair("max_tag_id",
                                 prefs.getString(TAG_ID, "0")));
 
@@ -94,10 +90,8 @@ public class GetTagPhotoIGTask extends AsyncTask<String, Void, String> {
                             if (resObject.has("meta")
                                     && resObject.getJSONObject("meta").has(
                                     "error_type")) {
-                                isFine = false;
 
                             } else {
-                                isFine = true;
                                 final JSONObject pageObject = resObject
                                         .getJSONObject("pagination");
 
@@ -114,10 +108,10 @@ public class GetTagPhotoIGTask extends AsyncTask<String, Void, String> {
 
                     } else {
                         Log.d("get ig photos mode: ", mode);
-                        final List<NameValuePair> reqParams = new ArrayList<NameValuePair>(
+                        final List<NameValuePair> reqParams = new ArrayList<>(
                                 1);
                         reqParams.add(new BasicNameValuePair("count", String
-                                .valueOf(ISConsts.INSTAGRAM_PAGE_COUNT)));
+                                .valueOf(ISConsts.instagramconsts.instagram_page_count)));
                         response = request.requestGet("/tags/" + edTag
                                 + "/media/recent", reqParams);
                         if (isJSONValid(response)) {
@@ -125,16 +119,12 @@ public class GetTagPhotoIGTask extends AsyncTask<String, Void, String> {
                             if (resObject.has("meta")
                                     && resObject.getJSONObject("meta").has(
                                     "error_type")) {
-                                isFine = false;
 
                                 Handler handler = new Handler(
-                                        context.getMainLooper());
+                                        mContext.getMainLooper());
                                 handler.post(new Runnable() {
                                     public void run() {
-                                        Toast.makeText(
-                                                context,
-                                                "Èçâèíèòå, íî òàêîé õåøòåã íåäîïóñòèì",
-                                                Toast.LENGTH_LONG).show();
+
                                         if (GetTagPhotoIGTask.this.dialog
                                                 .isShowing()) {
                                             GetTagPhotoIGTask.this.dialog
@@ -143,7 +133,6 @@ public class GetTagPhotoIGTask extends AsyncTask<String, Void, String> {
                                     }
                                 });
                             } else {
-                                isFine = true;
                                 final JSONObject pageObject = resObject
                                         .getJSONObject("pagination");
                                 final SharedPreferences.Editor editor = prefs
@@ -161,13 +150,10 @@ public class GetTagPhotoIGTask extends AsyncTask<String, Void, String> {
                 } catch (Exception e) {
                 }
             } else {
-                Handler handler = new Handler(context.getMainLooper());
+                Handler handler = new Handler(mContext.getMainLooper());
                 handler.post(new Runnable() {
                     public void run() {
-                        Toast.makeText(
-                                context,
-                                "Íó óäàëîñü ïîëó÷èòü ôîòîãðàôèè èç Instagram. Ïðîâåðüòå èíòåðíåò ñîåäèíåíèå",
-                                Toast.LENGTH_LONG).show();
+
                         if (GetTagPhotoIGTask.this.dialog.isShowing()) {
                             GetTagPhotoIGTask.this.dialog.dismiss();
                         }
@@ -184,44 +170,34 @@ public class GetTagPhotoIGTask extends AsyncTask<String, Void, String> {
     protected void onPostExecute(final String result) {
         super.onPostExecute(result);
         if (mode.equals("default")) {
-            if (isFine) {
-//                context.startActivity(new Intent(context, GridActivity_.class)
-//                        .putExtra("res", result).putExtra("savedCol", color)
-//                        .putExtra("aT", aT).putExtra("tag", tag));
-            } else {
-                Handler handler = new Handler(context.getMainLooper());
-                handler.post(new Runnable() {
-                    public void run() {
-                        Toast.makeText(context,
-                                "Èçâèíèòå, íî òàêîé õåøòåã íåäîïóñòèì",
-                                Toast.LENGTH_LONG).show();
-                        if (GetTagPhotoIGTask.this.dialog.isShowing()) {
-                            GetTagPhotoIGTask.this.dialog.dismiss();
-                        }
+            Handler handler = new Handler(mContext.getMainLooper());
+            handler.post(new Runnable() {
+                public void run() {
+                    if (GetTagPhotoIGTask.this.dialog.isShowing()) {
+                        GetTagPhotoIGTask.this.dialog.dismiss();
                     }
-                });
-            }
+                }
+            });
+
         } else if (mode.equals("update")) {
-            if (isFine) {
-//                ((GridActivity) context).stopUpPull();
-            } else {
-                Handler handler = new Handler(context.getMainLooper());
-                handler.post(new Runnable() {
-                    public void run() {
-                        Toast.makeText(context,
-                                "Èçâèíèòå, íî òàêîé õåøòåã íåäîïóñòèì",
-                                Toast.LENGTH_LONG).show();
-                        if (GetTagPhotoIGTask.this.dialog.isShowing()) {
-                            GetTagPhotoIGTask.this.dialog.dismiss();
-                        }
+
+            Handler handler = new Handler(mContext.getMainLooper());
+            handler.post(new Runnable() {
+                public void run() {
+
+                    if (GetTagPhotoIGTask.this.dialog.isShowing()) {
+                        GetTagPhotoIGTask.this.dialog.dismiss();
                     }
-                });
-            }
+                }
+            });
+
         }
         if (isShowProgress && this.dialog.isShowing()) {
             this.dialog.dismiss();
         }
+
     }
+
 
     public boolean isJSONValid(String test) {
         try {
@@ -235,5 +211,6 @@ public class GetTagPhotoIGTask extends AsyncTask<String, Void, String> {
         }
         return true;
     }
+
 
 }

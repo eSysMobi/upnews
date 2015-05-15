@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">upnews hashtag</string>
-    <string name="title_activity_maps">Map</string>
+
+    <string name="twitter_auth_failure_message">Twitter authorization fail.Try again</string>
+    <string name="twitter_hashtag_required_message">Input hashtag for tweets searching</string>
+    <string name="get_twitter_feed_message">Can not get from twitter.Next attempt will be in 5 minutes</string>
+
+    <string name="instagram_auth_failure_message">Twitter authorization fail.Try again</string>
+    <string name="instagram_auth_cancel_message">Instagram authorization has been canceled</string>
+    <string name="instagram_hashtag_required_message">Input hashtag for searching photos from instagram</string>
+
+
+    <string name="drive_folder_create_dialog_message">Google Drive folder processing</string>
+
 </resources>

@@ -13,11 +13,15 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import mobi.esys.consts.ISConsts;
+
 /**
  * Created by Артем on 14.04.2015.
  */
 public class FilesHelper {
     private transient File file;
+    private transient final String TAG = this.getClass().getSimpleName().concat(ISConsts.globals.default_logtag_devider);
+
 
     public FilesHelper(String filePath) {
         super();
@@ -77,7 +81,7 @@ public class FilesHelper {
         if (i > 0 && i < name.length() - 1) {
             ext = name.substring(i + 1);
         }
-        Log.d("fw_tag", ext);
+        Log.d(TAG, ext);
         return ext;
     }
 

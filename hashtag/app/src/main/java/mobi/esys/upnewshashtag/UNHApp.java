@@ -2,28 +2,22 @@ package mobi.esys.upnewshashtag;
 
 import android.app.Application;
 import android.content.res.Configuration;
+import android.os.Environment;
 
-import com.google.api.services.drive.Drive;
+import java.io.File;
+
+import mobi.esys.consts.ISConsts;
 
 
 /**
  * Created by Артем on 14.04.2015.
  */
 public class UNHApp extends Application {
-    private static Drive driveService;
-
-    public void registerGoogle(Drive drive) {
-        driveService = drive;
-    }
-
-    public static Drive getDriveService() {
-        return driveService;
-    }
-
-
     @Override
     public void onCreate() {
         super.onCreate();
+        createFoldersIfNotExist();
+
     }
 
     @Override
@@ -41,4 +35,21 @@ public class UNHApp extends Application {
     public void onTerminate() {
         super.onTerminate();
     }
+
+    private void createFoldersIfNotExist() {
+        File dir = new File(Environment.getExternalStorageDirectory()
+                .getAbsolutePath().concat(ISConsts.globals.dir_name));
+        File photoDir = new File(Environment.getExternalStorageDirectory()
+                .getAbsolutePath().concat(ISConsts.globals.dir_name).concat(ISConsts.globals.photo_dir_name));
+
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
+        if (!photoDir.exists()) {
+            photoDir.mkdir();
+        }
+
+    }
+
+
 }

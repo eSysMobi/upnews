@@ -9,10 +9,14 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
+
 import net.londatiga.android.instagram.Instagram;
 import net.londatiga.android.instagram.InstagramUser;
 
 import mobi.esys.consts.ISConsts;
+
 
 /**
  * Created by Артем on 13.04.2015.
@@ -20,8 +24,7 @@ import mobi.esys.consts.ISConsts;
 public class InstaLoginActivity extends Activity implements View.OnClickListener {
     private transient Instagram instagram;
     private transient Button instAuthBtn;
-
-    //debug gd key 683764382729-2rqbvb03877h0hv48lakl1t56qo49r1n
+    private transient EasyTracker easyTracker;
 
 
     @Override
@@ -30,15 +33,19 @@ public class InstaLoginActivity extends Activity implements View.OnClickListener
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        instagram = new Instagram(InstaLoginActivity.this, ISConsts.INSTAGRAM_CLIENT_ID, ISConsts.INSTAGRAM_CLIENT_SECRET, ISConsts.INSTAGRAM_REDIRECT_URI);
+        instagram = new Instagram(InstaLoginActivity.this, ISConsts.instagramconsts.instagram_client_id, ISConsts.instagramconsts.instagram_client_secret, ISConsts.instagramconsts.instagram_redirect_uri);
+        easyTracker = EasyTracker.getInstance(InstaLoginActivity.this);
 
-        if ("".equals(instagram.getSession().getAccessToken()) || instagram.getSession().getAccessToken() == null) {
+
+        if (instagram.getSession().getAccessToken().isEmpty() || instagram.getSession().getAccessToken() == null) {
             setContentView(R.layout.activity_instalogin);
             instAuthBtn = (Button) findViewById(R.id.instAuthBtn);
             instAuthBtn.setOnClickListener(this);
         } else {
             finish();
             startActivity(new Intent(InstaLoginActivity.this, InstagramHashTagActivity.class));
+            easyTracker.send(MapBuilder.createEvent("auth",
+                    "instagram_auth", "go_to_hashtag_input", null).build());
         }
 
     }
@@ -48,20 +55,26 @@ public class InstaLoginActivity extends Activity implements View.OnClickListener
         public void onSuccess(final InstagramUser user) {
             finish();
             startActivity(new Intent(InstaLoginActivity.this, InstagramHashTagActivity.class));
+            easyTracker.send(MapBuilder.createEvent("auth",
+                    "instagram_auth", "success", null).build());
         }
 
         @Override
         public void onError(final String error) {
             Toast.makeText(InstaLoginActivity.this,
-                    "Не удалось авторизоватся в Instagram",
+                    getString(R.string.instagram_auth_failure_message),
                     Toast.LENGTH_LONG).show();
+            easyTracker.send(MapBuilder.createEvent("auth",
+                    "instagram_auth", "error", null).build());
         }
 
         @Override
         public void onCancel() {
             Toast.makeText(InstaLoginActivity.this,
-                    "Попытка входа была отменена пользоваетелем",
+                    getString(R.string.instagram_auth_cancel_message),
                     Toast.LENGTH_LONG).show();
+            easyTracker.send(MapBuilder.createEvent("auth",
+                    "instagram_auth", "cancel", null).build());
         }
     };
 

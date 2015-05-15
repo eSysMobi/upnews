@@ -14,7 +14,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
+
+import net.londatiga.android.instagram.Instagram;
+
+import java.util.concurrent.ExecutionException;
+
 import mobi.esys.consts.ISConsts;
+import mobi.esys.tasks.CheckInstaTagTask;
 
 /**
  * Created by Артем on 17.04.2015.
@@ -23,25 +31,38 @@ public class InstagramHashTagActivity extends Activity implements View.OnClickLi
     private transient EditText hashTagEdit;
     private transient Button enterHashBtn;
     private transient SharedPreferences preferences;
+    private transient UNHApp mApp;
+    private transient Instagram instagram;
+    private transient EasyTracker easyTracker;
+
+    private static final int MIN_EDITABLE_LENGTH = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instagram_hash_tag);
 
+        easyTracker = EasyTracker.getInstance(InstagramHashTagActivity.this);
+
         hashTagEdit = (EditText) findViewById(R.id.instHashTagEdit);
         enterHashBtn = (Button) findViewById(R.id.enterHashTagBtn);
 
         enterHashBtn.setOnClickListener(InstagramHashTagActivity.this);
 
-        preferences = getSharedPreferences(ISConsts.PREF_PREFIX, MODE_PRIVATE);
-        String hashTag = preferences.getString("igHashTag", "");
-        if (!"".equals(hashTag)) {
+        mApp = (UNHApp) getApplicationContext();
+
+        instagram = new Instagram(InstagramHashTagActivity.this,
+                ISConsts.instagramconsts.instagram_client_id, ISConsts.instagramconsts.instagram_client_secret,
+                ISConsts.instagramconsts.instagram_redirect_uri);
+
+        preferences = getSharedPreferences(ISConsts.globals.pref_prefix, MODE_PRIVATE);
+        String hashTag = preferences.getString(ISConsts.prefstags.instagram_hashtag, "");
+        if (!hashTag.isEmpty()) {
             hashTagEdit.setText(hashTag);
         }
 
 
-        if (hashTagEdit.getEditableText().length() > 2) {
+        if (hashTagEdit.getEditableText().length() > MIN_EDITABLE_LENGTH) {
             hashTagEdit.setSelection(hashTagEdit.getEditableText().length() - 1);
         } else {
             hashTagEdit.setSelection(1);
@@ -84,20 +105,8 @@ public class InstagramHashTagActivity extends Activity implements View.OnClickLi
             public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
                 boolean handled = false;
 
-                // Some phones disregard the IME setting option in the xml, instead
-                // they send IME_ACTION_UNSPECIFIED so we need to catch that
                 if (EditorInfo.IME_ACTION_DONE == actionId || EditorInfo.IME_ACTION_UNSPECIFIED == actionId) {
-                    if (!"".equals(hashTagEdit.getEditableText().toString())
-                            && hashTagEdit.getEditableText().toString().length() >= 2) {
-                        startActivity(new Intent(InstagramHashTagActivity.this, TwitterLoginActivity.class));
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString("igHashTag", hashTagEdit.getEditableText().toString());
-                        editor.commit();
-                    } else {
-
-                        Toast.makeText(InstagramHashTagActivity.this, "Введите тэг для поиска изображений в Instagram", Toast.LENGTH_SHORT).show();
-                    }
-
+                    checkTagAndGo();
                     handled = true;
                 }
 
@@ -109,15 +118,35 @@ public class InstagramHashTagActivity extends Activity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if (!"".equals(hashTagEdit.getEditableText().toString())
-                && hashTagEdit.getEditableText().toString().length() >= 2) {
-            startActivity(new Intent(InstagramHashTagActivity.this, TwitterLoginActivity.class));
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("igHashTag", hashTagEdit.getEditableText().toString());
-            editor.commit();
-        } else {
+        checkTagAndGo();
+    }
 
-            Toast.makeText(InstagramHashTagActivity.this, "Введите тэг для поиска изображений в Instagram", Toast.LENGTH_SHORT).show();
+    public void checkTagAndGo() {
+        if (!hashTagEdit.getEditableText().toString().isEmpty()
+                && hashTagEdit.getEditableText().toString().length() >= MIN_EDITABLE_LENGTH) {
+            CheckInstaTagTask checkInstaTagTask = new CheckInstaTagTask(hashTagEdit.getEditableText().toString(), mApp);
+            checkInstaTagTask.execute(instagram.getSession().getAccessToken());
+            try {
+                if (checkInstaTagTask.get()) {
+                    startActivity(new Intent(InstagramHashTagActivity.this, TwitterLoginActivity.class));
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString(ISConsts.prefstags.instagram_hashtag, hashTagEdit.getEditableText().toString());
+                    editor.commit();
+                    easyTracker.send(MapBuilder.createEvent("input_hashtag",
+                            "instagram_input_hashtag", hashTagEdit.getEditableText().toString(), null).build());
+                } else {
+                    Toast.makeText(InstagramHashTagActivity.this, "Sorry but this hashtag don't allowed", Toast.LENGTH_SHORT).show();
+                    easyTracker.send(MapBuilder.createEvent("input_hashtag",
+                            "instagram_input_hashtag", "hashtag_dont_allowed", null).build());
+
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(InstagramHashTagActivity.this, getString(R.string.instagram_hashtag_required_message), Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -47,4 +47,13 @@
         android:layout_centerHorizontal="true"
         android:text="OK" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Skip"
+        android:id="@+id/skipBtn"
+        android:layout_marginTop="44dp"
+        android:layout_below="@+id/gdAuthBtn"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

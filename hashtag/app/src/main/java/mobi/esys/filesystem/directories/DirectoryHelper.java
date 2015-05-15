@@ -19,7 +19,7 @@ import mobi.esys.filesystem.files.FilesHelper;
  */
 public class DirectoryHelper {
     private transient String directoryPath;
-    private static final String DIR_WORKS_TAG = "DirectoryWorks";
+    private final String TAG = this.getClass().getSimpleName().concat(ISConsts.globals.default_logtag_devider);
 
     public DirectoryHelper(String directoryPath) {
         this.directoryPath = directoryPath;
@@ -29,7 +29,7 @@ public class DirectoryHelper {
     public String[] getDirFileList(String mess) {
         File videoDir = new File(Environment.getExternalStorageDirectory()
                 .getAbsolutePath().concat(this.directoryPath));
-        Log.d(DIR_WORKS_TAG, videoDir.getAbsolutePath());
+        Log.d(TAG, videoDir.getAbsolutePath());
         List<String> filePaths = new ArrayList<>();
         if (videoDir.exists()) {
             File[] files = videoDir.listFiles();
@@ -40,9 +40,9 @@ public class DirectoryHelper {
                     continue;
                 }
             }
-            Log.d("files dir works" + mess, filePaths.toString());
+            Log.d(TAG, mess.concat(" @ ").concat(filePaths.toString()));
         } else {
-            Log.d(DIR_WORKS_TAG, "folder don't exist");
+            Log.d(TAG, "folder don't exist");
         }
 
         return filePaths.toArray(new String[filePaths.size()]);
@@ -51,13 +51,13 @@ public class DirectoryHelper {
     public void deleteFilesFromDir(List<Integer> maskList, Context context) {
         File videoDir = new File(Environment.getExternalStorageDirectory()
                 .getAbsolutePath().concat(this.directoryPath));
-        Log.d(DIR_WORKS_TAG, "deleteFilesFromDir");
-        Log.d(DIR_WORKS_TAG, Environment.getExternalStorageDirectory()
+        Log.d(TAG, "deleteFilesFromDir");
+        Log.d(TAG, Environment.getExternalStorageDirectory()
                 .getAbsolutePath().concat(this.directoryPath));
 
-        Log.d("mask list task", maskList.toString());
+        Log.d(TAG, maskList.toString());
         if (videoDir.exists()) {
-            int ci = context.getSharedPreferences(ISConsts.PREF_PREFIX,
+            int ci = context.getSharedPreferences(ISConsts.globals.pref_prefix,
                     Context.MODE_PRIVATE).getInt("currPlIndex", 0);
 
             File[] files = videoDir.listFiles();
@@ -71,7 +71,7 @@ public class DirectoryHelper {
 
                     long diff = today.getTimeInMillis() - modDate.getTime();
                     long days = diff / (24 * 60 * 60 * 1000);
-                    if (getFileExtension(files[i].getName()).equals(ISConsts.TEMP_FILE_EXT) && days > 14) {
+                    if (getFileExtension(files[i].getName()).equals(ISConsts.globals.temp_file_ext) && days > 14) {
                         files[i].delete();
                     } else {
                         files[i].delete();
@@ -90,7 +90,7 @@ public class DirectoryHelper {
                         long diff = today.getTimeInMillis() - modDate.getTime();
                         long days = diff / (24 * 60 * 60 * 1000);
                         if ((files[i].exists() && ci != i) || (
-                                (getFileExtension(files[i].getName()).equals(ISConsts.TEMP_FILE_EXT) && days > 14)
+                                (getFileExtension(files[i].getName()).equals(ISConsts.globals.temp_file_ext) && days > 14)
                         )) {
                             files[i].delete();
                         }
@@ -98,11 +98,11 @@ public class DirectoryHelper {
                 }
             }
             SharedPreferences.Editor editor = context.getSharedPreferences(
-                    ISConsts.PREF_PREFIX, Context.MODE_PRIVATE).edit();
+                    ISConsts.globals.pref_prefix, Context.MODE_PRIVATE).edit();
             editor.putBoolean("isDeleting", false);
             editor.commit();
         } else {
-            Log.d(DIR_WORKS_TAG, "Folder don't exists");
+            Log.d(TAG, "Folder don't exists");
         }
     }
 
@@ -126,7 +126,7 @@ public class DirectoryHelper {
         if (i > 0 && i < fileName.length() - 1) {
             ext = fileName.substring(i + 1);
         }
-        Log.d("fw_tag", ext);
+        Log.d(TAG, ext);
         return ext;
     }
 }

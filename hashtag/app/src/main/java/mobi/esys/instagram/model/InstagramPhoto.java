@@ -55,4 +55,13 @@ public class InstagramPhoto {
         this.igOriginURL = igOriginURL;
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("InstagramPhoto{");
+        sb.append("igPhotoID='").append(igPhotoID).append('\'');
+        sb.append(", igThumbURL='").append(igThumbURL).append('\'');
+        sb.append(", igOriginURL='").append(igOriginURL).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

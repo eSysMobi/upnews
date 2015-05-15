@@ -15,7 +15,7 @@ public class BootUpReceiver extends BroadcastReceiver {
     public void onReceive(final Context context, Intent intent) {
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             try {
-                Thread.sleep(ISConsts.APP_START_DELAY);
+                Thread.sleep(ISConsts.times.app_start_delay);
             } catch (InterruptedException e) {
             }
             context.startActivity(new Intent(context, InstaLoginActivity.class)
