@@ -1,0 +1,111 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+
+apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+def AAVersion = '3.3.1'
+
+configurations.all {
+    resolutionStrategy {
+        force 'com.google.guava:guava:18.0'
+    }
+}
+
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        applicationId "mobi.esys.unl_new_api"
+        minSdkVersion 11
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+}
+
+apt {
+    arguments {
+        androidManifestFile variant.outputs[0].processResources.manifestFile
+    }
+}
+
+
+
+dependencies {
+    compile fileTree(dir: 'libs', include: '*.jar')
+    compile 'net.bozho.easycamera:easycamera:0.0.1:aar@aar'
+    compile 'com.squareup.okio:okio:1.3.0'
+    compile 'com.squareup.okhttp:okhttp:2.4.0-RC1'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.4.0-RC1'
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
+    androidTestCompile 'info.cukes:cucumber-core:1.1.8'
+    androidTestCompile 'info.cukes:cucumber-java:1.1.8'
+    androidTestCompile 'info.cukes:cucumber-html:0.2.3'
+    compile 'io.reactivex:rxandroid:0.24.0'
+    compile 'com.google.code.gson:gson:2.3'
+    compile 'com.andreabaccega:android-form-edittext:1.1.0@aar'
+    androidTestCompile('info.cukes:cucumber-android:1.2.2')
+    androidTestCompile('info.cukes:cucumber-junit:1.1.8')
+            {
+                exclude group: 'org.hamcrest', module: 'hamcrest-core'
+                exclude group: 'org.hamcrest', module: 'hamcrest-integration'
+                exclude group: 'org.hamcrest', module: 'hamcrest-library'
+            }
+    apt "org.androidannotations:androidannotations:$AAVersion"
+    compile "org.androidannotations:androidannotations-api:$AAVersion"
+    compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'com.google.guava:guava:18.0'
+    compile 'commons-io:commons-io:2.4'
+    compile 'commons-codec:commons-codec:1.10'
+    compile 'net.danlew:android.joda:2.7.2'
+    compile 'com.fabiendevos:nanotasks:1.1.0'
+    compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
+        exclude group: 'com.google.android', module: 'support-v4'
+    }
+    compile 'com.orhanobut:hawk:1.10'
+    compile 'com.orhanobut:logger:1.9'
+    compile 'com.beardedhen:androidbootstrap:1.2.1'
+    compile 'com.android.support:support-v4:22.2.0'
+    compile 'com.android.support:multidex:1.0.0'
+}

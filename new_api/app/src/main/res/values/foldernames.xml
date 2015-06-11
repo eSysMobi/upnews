@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="base_dir">upnews</string>
+    <string name="photo_dit">photo</string>
+    <string name="video_dir">video</string>
+</resources>

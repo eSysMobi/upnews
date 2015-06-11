@@ -1,0 +1,11 @@
+<resources>
+    <string name="appName">upnews</string>
+    <string name="pswLabel">Password</string>
+    <string name="loginLabel">Login</string>
+    <string name="loginBrnLabel">Login</string>
+    <string name="loginEmpty">Please input password and login</string>
+    <string name="tokenRes">unToken</string>
+    <string name="baseDir">upnews</string>
+    <string name="videoDir">video</string>
+    <string name="photoDir">photo</string>
+</resources>
