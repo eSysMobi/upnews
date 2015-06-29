@@ -8,7 +8,6 @@ import com.orhanobut.logger.Logger;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,17 +81,22 @@ public class FoldersHelper {
         }
     }
 
+    public void deleteTMPFiles() {
+        File[] filesList = getFileList();
+        for (File aFilesList : filesList) {
+            if (FilenameUtils.getExtension(aFilesList.getName()).equals(".tmp")) {
+                aFilesList.delete();
+            }
+        }
+    }
+
     public List<String> getFolderMD5Sums() {
         List<String> md5Sums = new ArrayList<>();
         File[] fileList = getFileList();
         for (File aFileList : fileList) {
             FilesHelper filesHelper = new FilesHelper(aFileList);
-            try {
-                md5Sums.add(filesHelper.getMD5Sum());
-                Logger.d(folderName + ": ", md5Sums.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            md5Sums.add(filesHelper.getMD5Sum());
+            Logger.d(folderName + ": ", md5Sums.toString());
         }
         return md5Sums;
     }

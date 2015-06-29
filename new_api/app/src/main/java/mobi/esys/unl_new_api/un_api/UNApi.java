@@ -2,7 +2,6 @@ package mobi.esys.unl_new_api.un_api;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Environment;
 
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
@@ -13,6 +12,8 @@ import com.orhanobut.logger.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -25,7 +26,6 @@ import mobi.esys.unl_new_api.helpers.TimeHelper;
 import mobi.esys.unl_new_api.model.UNPlaylist;
 import mobi.esys.unl_new_api.model.UNVideo;
 import mobi.esys.unl_new_api.model.UNVideoFile;
-import mobi.esys.unl_new_api.task.DeleteTask;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -138,17 +138,30 @@ public class UNApi {
                             unVideos.add(new UNVideo(currObj.get("id").getAsString(),
                                     currObj.get("name").getAsString(),
                                     currObj.get("file_webpath").getAsString(),
-                                    gson.fromJson(fileObj, UNVideoFile.class)));
+                                    gson.fromJson(fileObj, UNVideoFile.class),
+                                    currObj.get("videosettings").getAsJsonObject().get("video_order").getAsInt()));
+
                             Logger.d(unVideos.toString());
                         }
 
-                        String videoDownDir = Environment.getExternalStorageDirectory()
-                                .getAbsolutePath().concat(File.separator).concat(mContext.getString(R.string.base_dir)).concat(File.separator).concat(mContext.getString(R.string.video_dir));
-                        Logger.d(unVideos.toString());
-                        Logger.d(videoDownDir);
 
+                        Collections.sort(unVideos, new Comparator<UNVideo>() {
+                            @Override
+                            public int compare(UNVideo lhs, UNVideo rhs) {
+                                return lhs.getUnOrderNum() - rhs.getUnOrderNum();
+                            }
+                        });
 
-                        DeleteTask.delete(mContext, unVideos, playlistID, videoDownDir);
+                        Gson gson = new Gson();
+                        List<UNVideo> textList = new ArrayList<>();
+                        textList.addAll(unVideos);
+                        String jsonText = gson.toJson(textList);
+
+                        SharedPreferences.Editor editor = unPrefs.edit();
+
+                        editor.putString("pl", jsonText);
+                        editor.apply();
+
                     }
 
                     @Override
@@ -158,6 +171,13 @@ public class UNApi {
                 }
 
         );
+
+        Collections.sort(unVideos, new Comparator<UNVideo>() {
+            @Override
+            public int compare(UNVideo lhs, UNVideo rhs) {
+                return lhs.getUnOrderNum() - rhs.getUnOrderNum();
+            }
+        });
 
         return unVideos;
     }
@@ -174,7 +194,7 @@ public class UNApi {
                 firstVideo = new UNVideo(resObj.get("id").getAsString(),
                         resObj.get("name").getAsString(),
                         resObj.get("file_webpath").getAsString(),
-                        gson.fromJson(fileObj, UNVideoFile.class));
+                        gson.fromJson(fileObj, UNVideoFile.class), 1);
                 Logger.d(firstVideo.toString());
                 mBus.post(new GetFirstVideoEvent(firstVideo, playlist));
             }
@@ -187,7 +207,7 @@ public class UNApi {
         return firstVideo;
     }
 
-    public static UNVideo getNextVideo(String playlistID, String videoID, int playedTimes) {
+    public static UNVideo getNextVideo(String playlistID, String videoID, int playedTimes, final int orderNumber) {
         String token = unPrefs.getString(tokenName, "");
         String timeStamp = TimeHelper.getCurrentTimeStamp();
 
@@ -200,16 +220,22 @@ public class UNApi {
                     JsonObject resObject = jsonElement.getAsJsonObject().get("result").getAsJsonObject();
                     JsonObject fileObj = resObject.get("file").getAsJsonObject();
                     Gson gson = new Gson();
+
                     nextVideo = new UNVideo(resObject.get("id").getAsString(),
                             resObject.get("name").getAsString(),
                             resObject.get("file_webpath").getAsString(),
-                            gson.fromJson(fileObj, UNVideoFile.class));
+                            gson.fromJson(fileObj, UNVideoFile.class), orderNumber);
+
+                    Logger.d("next video: ".concat(nextVideo.toString()));
+
+                    SharedPreferences.Editor editor = unPrefs.edit();
+                    editor.putInt("nextVideoIndex", nextVideo.getUnOrderNum());
+                    editor.apply();
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Logger.d(error.getUrl());
                 Logger.d("next video " + error.toString());
             }
         });

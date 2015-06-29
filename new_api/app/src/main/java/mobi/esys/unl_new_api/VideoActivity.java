@@ -30,7 +30,6 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.orhanobut.logger.Logger;
-import com.squareup.leakcanary.RefWatcher;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -98,8 +97,8 @@ public class VideoActivity extends UNBaseActivity implements
 
     private transient MediaController mController;
 
-    private transient int lat;
-    private transient int lng;
+    private transient double lat;
+    private transient double lng;
     private transient UNApp unApp;
 
     private transient boolean isCharging = false;
@@ -115,8 +114,6 @@ public class VideoActivity extends UNBaseActivity implements
         unApp = (UNApp) getApplicationContext();
         bus = new EventBus();
         UNApi.setCurrentContext(VideoActivity.this, bus);
-        RefWatcher refWatcher = UNApp.getRefWatcher(this);
-        refWatcher.watch(this);
 
 
         SurfaceView surfaceView = new SurfaceView(VideoActivity.this);
@@ -211,11 +208,11 @@ public class VideoActivity extends UNBaseActivity implements
                 Toast.makeText(VideoActivity.this, "Play End", Toast.LENGTH_SHORT).show();
                 playEnd();
 
-                if (unPref.getBoolean("isDown", false)) {
-                    UNApi.getPlaylistVideos(String.valueOf(playback.getPlaylist().getUnPlaylistID()));
-                }
                 playback.nextVideo();
                 startPreview();
+                UNApi.getPlaylistVideos(String.valueOf(playback.getPlaylist().getUnPlaylistID()));
+
+                playback.restartDownload();
             }
         });
     }
@@ -248,8 +245,8 @@ public class VideoActivity extends UNBaseActivity implements
 
     @Override
     public void onLocationChanged(Location location) {
-        lat = (int) (location.getLatitude());
-        lng = (int) (location.getLongitude());
+        lat = location.getLatitude();
+        lng = location.getLongitude();
     }
 
     @Override
@@ -321,7 +318,9 @@ public class VideoActivity extends UNBaseActivity implements
                     decodeFile(picFile.getAbsolutePath(), bitmap_options);
 
 
-            Logger.d("videoName".concat(videoPref));
+            if (videoPref != null) {
+                Logger.d("videoName".concat(videoPref));
+            }
 
 
             FaceDetector face_detector = new FaceDetector(
@@ -358,9 +357,21 @@ public class VideoActivity extends UNBaseActivity implements
         public void onSignalStrengthsChanged(SignalStrength signalStrength) {
             super.onSignalStrengthsChanged(signalStrength);
             sigStr = signalStrength.getGsmSignalStrength();
-            SharedPreferences.Editor editor = unPref.edit();
-            editor.putString("signalStrength", String.valueOf(signalStrength.getGsmSignalStrength()));
-            editor.apply();
+            if (signalStrength.isGsm()) {
+                if (signalStrength.getGsmSignalStrength() != 99) {
+                    SharedPreferences.Editor editor = unPref.edit();
+                    editor.putString("signalStrength", String.valueOf(signalStrength.getGsmSignalStrength() * 2 - 113));
+                    editor.apply();
+                } else {
+                    SharedPreferences.Editor editor = unPref.edit();
+                    editor.putString("signalStrength", String.valueOf(signalStrength.getGsmSignalStrength()));
+                    editor.apply();
+                }
+            } else {
+                SharedPreferences.Editor editor = unPref.edit();
+                editor.putString("signalStrength", String.valueOf(signalStrength.getCdmaDbm()));
+                editor.apply();
+            }
         }
     }
 
@@ -506,8 +517,8 @@ public class VideoActivity extends UNBaseActivity implements
         }
     }
 
-    public UNVideo getNextVideo(String plID, String vID, int pt) {
-        return UNApi.getNextVideo(plID, vID, pt);
+    public UNVideo getNextVideo(String plID, String vID, int pt, int orderNumber) {
+        return UNApi.getNextVideo(plID, vID, pt, orderNumber);
     }
 
 

@@ -28,15 +28,15 @@ public class UNVideo {
     private String unVideoID;
     private String unVideoName;
     private String unVideoURL;
-    private int unVideoPT;
     private UNVideoFile unVideoFileInstance;
+    private int unOrderNum;
 
-    public UNVideo(String unVideoID, String unVideoName, String unVideoURL, UNVideoFile unVideoFileInstance) {
+    public UNVideo(String unVideoID, String unVideoName, String unVideoURL, UNVideoFile unVideoFileInstance, int unOrderNum) {
         this.unVideoID = unVideoID;
         this.unVideoName = unVideoName;
         this.unVideoURL = unVideoURL;
         this.unVideoFileInstance = unVideoFileInstance;
-        this.unVideoPT = 0;
+        this.unOrderNum = unOrderNum;
     }
 
     public String getUnVideoID() {
@@ -79,10 +79,11 @@ public class UNVideo {
 
         UNVideo unVideo = (UNVideo) o;
 
-        if (!unVideoID.equals(unVideo.unVideoID)) return false;
-        if (!unVideoName.equals(unVideo.unVideoName)) return false;
-        if (!unVideoURL.equals(unVideo.unVideoURL)) return false;
-        return unVideoFileInstance.equals(unVideo.unVideoFileInstance);
+        return unVideoID.equals(unVideo.unVideoID)
+                && unVideoName.equals(unVideo.unVideoName)
+                && unVideoURL.equals(unVideo.unVideoURL)
+                && unOrderNum == unVideo.unOrderNum
+                && unVideoFileInstance.equals(unVideo.unVideoFileInstance);
 
     }
 
@@ -92,25 +93,27 @@ public class UNVideo {
         result = 31 * result + unVideoName.hashCode();
         result = 31 * result + unVideoURL.hashCode();
         result = 31 * result + unVideoFileInstance.hashCode();
+        result = 31 * result + unOrderNum;
         return result;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("UNVideo{");
-        sb.append("unVideoID='").append(unVideoID).append('\'');
-        sb.append(", unVideoName='").append(unVideoName).append('\'');
-        sb.append(", unVideoURL='").append(unVideoURL).append('\'');
-        sb.append(", unVideoFileInstance=").append(unVideoFileInstance);
-        sb.append('}');
-        return sb.toString();
+        return "UNVideo{" + "unVideoID='" + unVideoID
+                + '\'' + ", unVideoName='" + unVideoName
+                + '\'' + ", unVideoURL='" + unVideoURL
+                + '\'' + ", unVideoFileInstance="
+                + unVideoFileInstance
+                + ", unOrderNum=" + unOrderNum + '}';
     }
 
-    public int getUnVideoPT() {
-        return unVideoPT;
+    public int getUnOrderNum() {
+        return unOrderNum;
     }
 
-    public void setUnVideoPT(int unVideoPT) {
-        this.unVideoPT = unVideoPT;
+    public void setUnOrderNum(int unOrderNum) {
+        this.unOrderNum = unOrderNum;
     }
+
+
 }

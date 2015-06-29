@@ -30,8 +30,8 @@
 
     <FrameLayout
         android:id="@+id/camHolder"
-        android:layout_width="6dp"
-        android:layout_height="6dp"
+        android:layout_width="1px"
+        android:layout_height="1px"
         android:layout_below="@+id/logo" />
 
 </RelativeLayout>

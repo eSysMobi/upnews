@@ -3,9 +3,9 @@ package mobi.esys.unl_new_api;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.widget.Button;
+import android.widget.EditText;
 
-import com.beardedhen.androidbootstrap.BootstrapButton;
-import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.logger.Logger;
 
@@ -26,11 +26,11 @@ import mobi.esys.unl_new_api.un_api.UNApi;
 @EActivity(R.layout.activity_reg)
 public class RegActivity extends Activity {
     @ViewById
-    BootstrapEditText loginEdit;
+    EditText loginEdit;
     @ViewById
-    BootstrapEditText pswEdit;
+    EditText pswEdit;
     @ViewById
-    BootstrapButton unLoginBtn;
+    Button unLoginBtn;
     @StringRes
     String loginEmpty;
 

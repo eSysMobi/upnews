@@ -107,17 +107,15 @@ public class UNVideoFile {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("UNVideoFIle{");
-        sb.append("unVideoFileID='").append(unVideoFileID).append('\'');
-        sb.append(", unVideoFileName='").append(unVideoFileName).append('\'');
-        sb.append(", getUnVideoFileOriginName='").append(unVideoFileOriginName).append('\'');
-        sb.append(", unVideoFileSize='").append(unVideoFileSize).append('\'');
-        sb.append(", unVideoFileDate='").append(unVideoFileDate).append('\'');
-        sb.append(", unVideoFilePath='").append(unVideoFilePath).append('\'');
-        sb.append(", unVideoFileMD5='").append(unVideoFileMD5).append('\'');
-        sb.append(", unVideoFileMimeType='").append(unVideoFileMimeType).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "UNVideoFIle{" + "unVideoFileID='"
+                + unVideoFileID + '\''
+                + ", unVideoFileName='" + unVideoFileName + '\''
+                + ", getUnVideoFileOriginName='" + unVideoFileOriginName + '\''
+                + ", unVideoFileSize='" + unVideoFileSize + '\''
+                + ", unVideoFileDate='" + unVideoFileDate + '\''
+                + ", unVideoFilePath='" + unVideoFilePath + '\''
+                + ", unVideoFileMD5='" + unVideoFileMD5 + '\''
+                + ", unVideoFileMimeType='" + unVideoFileMimeType + '\'' + '}';
     }
 
     @Override
@@ -127,27 +125,15 @@ public class UNVideoFile {
 
         UNVideoFile that = (UNVideoFile) o;
 
-        if (!unVideoFileID.equals(that.unVideoFileID)) return false;
-        if (!unVideoFileName.equals(that.unVideoFileName)) return false;
-        if (!unVideoFileOriginName.equals(that.unVideoFileOriginName)) return false;
-        if (!unVideoFileSize.equals(that.unVideoFileSize)) return false;
-        if (!unVideoFileDate.equals(that.unVideoFileDate)) return false;
-        if (!unVideoFilePath.equals(that.unVideoFilePath)) return false;
-        if (!unVideoFileMD5.equals(that.unVideoFileMD5)) return false;
-        return unVideoFileMimeType.equals(that.unVideoFileMimeType);
+        return unVideoFileID.equals(that.unVideoFileID)
+                && unVideoFileName.equals(that.unVideoFileName)
+                && unVideoFileOriginName.equals(that.unVideoFileOriginName)
+                && unVideoFileSize.equals(that.unVideoFileSize)
+                && unVideoFileDate.equals(that.unVideoFileDate)
+                && unVideoFilePath.equals(that.unVideoFilePath)
+                && unVideoFileMD5.equals(that.unVideoFileMD5)
+                && unVideoFileMimeType.equals(that.unVideoFileMimeType);
 
     }
 
-    @Override
-    public int hashCode() {
-        int result = unVideoFileID.hashCode();
-        result = 31 * result + unVideoFileName.hashCode();
-        result = 31 * result + unVideoFileOriginName.hashCode();
-        result = 31 * result + unVideoFileSize.hashCode();
-        result = 31 * result + unVideoFileDate.hashCode();
-        result = 31 * result + unVideoFilePath.hashCode();
-        result = 31 * result + unVideoFileMD5.hashCode();
-        result = 31 * result + unVideoFileMimeType.hashCode();
-        return result;
-    }
 }
