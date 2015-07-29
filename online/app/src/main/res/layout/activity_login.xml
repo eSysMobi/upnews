@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.twitter.sdk.android.core.identity.TwitterLoginButton
+        android:id="@+id/twitter_login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <Button
+        android:id="@+id/igAuthBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/twitter_login_button"
+        android:layout_alignRight="@+id/twitter_login_button"
+        android:layout_below="@+id/twitter_login_button"
+        android:layout_marginTop="2px"
+        android:text="Login to Instagram" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/twitter_login_button"
+        android:layout_alignLeft="@+id/twitter_login_button"
+        android:layout_alignRight="@+id/twitter_login_button"
+        android:layout_marginTop="2px"/>
+</RelativeLayout>

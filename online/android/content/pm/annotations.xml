@@ -1,0 +1,5 @@
+<root>
+  <item name='android.content.pm.PackageManager GET_SIGNATURES'>
+    <annotation name='java.lang.annotation.Deprecated' />
+  </item>
+</root>

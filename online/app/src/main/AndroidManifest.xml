@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="mobi.esys.upnews_online">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+
+
+    <application
+        android:name=".UpnewsOnlineApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:screenOrientation="landscape"
+        android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/fb_app_id" />
+
+        <activity
+            android:name=".InAppBillingActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".LoginActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".PlayerActivity"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".FacebookGroupActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".InstagramLoginActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".InstagramHashtagActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".TwitterLoginActivity"
+            android:screenOrientation="landscape" />
+
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+
+        <receiver
+            android:name=".recievers.BootUpReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="c4b844cc94ec6cbfcc07c4a337ad37857a6fb89d" />
+    </application>
+
+</manifest>
